@@ -60,3 +60,12 @@
 - **Notes / Caveats:**
   - ה-repo כולל גם עץ אתר סטטי גדול ותיקיות נכסים; הם נסגרו יחד תחת אותו commit כדי לשמור snapshot עקבי של מצב העבודה הנוכחי.
 - **Related:** [[skill-obsidian-vault-workflow]], [[claude-md]], [[ceo-agent-prd]], [[vault-bootstrap]]
+
+### 2026-04-28 — Pushed `main` to `origin` after closure commit [shipped]
+- **What was done:**
+  - הורצה `git push -u origin main` כך שה־commit `e1efc94` עלה ל־`https://github.com/arielveig0/the-five-agents` וה־branch `main` ממוקם ב־`origin/main`.
+- **Decisions:**
+  - המשתמש ביקש להמשיך; השלב הפרקטי הבא היה `push` אחרי שהעץ היה `ahead 1` מקומית.
+- **Notes / Caveats:**
+  - GitHub הזהיר על קבץ MP4 >50MB (בנתיב הכולל "אתר - עותק") — אין failure, רק warning; אם יחזור על עצמו אפשר לשקול Git LFS או הוצאה מה־remote.
+- **Related:** [[skill-obsidian-vault-workflow]], [[vault-bootstrap]], [[claude-md]]

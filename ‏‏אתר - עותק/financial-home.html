@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>הבית הפיננסי למשפחה</title>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:   #1a1a1a;
+      --dark2:  #222;
+      --dark3:  #2d2d2d;
+      --teal:   #5db5a8;
+      --teal2:  #4a9a8e;
+      --white:  #ffffff;
+      --lgray:  #eeeeee;
+      --mgray:  #d8d8d8;
+      --text:   #dddddd;
+      --muted:  #aaaaaa;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Heebo', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      direction: rtl;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      background: var(--dark);
+      border-bottom: 1px solid #333;
+      display: flex; justify-content: center; gap: 6px;
+      padding: 9px 16px;
+    }
+    .nav-btn {
+      padding: 5px 16px;
+      border: 1.5px solid var(--teal);
+      background: transparent;
+      color: var(--white);
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Heebo', sans-serif;
+      font-size: 13px; font-weight: 500;
+      transition: background .2s, color .2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover  { background: var(--teal); }
+    .nav-btn.active { background: var(--white); color: var(--dark); border-color: var(--white); font-weight: 700; }
+
+    /* ── PAGES ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── HERO ── */
+    #home { padding-top: 45px; }
+    .hero {
+      position: relative; height: calc(100vh - 45px);
+      display: flex; flex-direction: column;
+      align-items: center; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('photo.jpg') center/cover no-repeat;
+      filter: brightness(.28);
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      text-align: center; padding-top: 60px;
+    }
+    .logo-ring {
+      width: 68px; height: 68px;
+      border: 2px solid var(--teal); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px; color: var(--teal);
+    }
+    .hero-sub  { font-size: 13px; letter-spacing: 3px; color: var(--muted); margin-bottom: 10px; }
+    .hero-h1   { font-size: clamp(34px,5vw,62px); font-weight: 900; line-height: 1.1; }
+    .hero-h1 span { color: var(--teal); }
+
+    /* service cards strip */
+    .cards-strip {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 1;
+      display: flex; justify-content: center; gap: 14px;
+      padding: 0 30px;
+    }
+    .scard {
+      flex: 1; max-width: 250px;
+      background: rgba(22,22,22,.93);
+      border: 1px solid #444; border-radius: 4px;
+      padding: 22px 18px 18px; text-align: center;
+    }
+    .scard h3 { font-size: 17px; font-weight: 700; margin-bottom: 14px; }
+    .scard ul { list-style: none; font-size: 12.5px; color: var(--text); line-height: 2.1; margin-bottom: 18px; }
+    .scard-btn {
+      padding: 7px 18px; background: var(--teal);
+      border: none; border-radius: 20px; color: #fff;
+      font-family: 'Heebo', sans-serif; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: background .2s;
+    }
+    .scard-btn:hover { background: var(--teal2); }
+
+    /* ── VIDEOS ── */
+    .vids-wrap {
+      background: #e2e2e2; padding: 40px 20px;
+      display: flex; justify-content: center; align-items: center; gap: 0;
+      position: relative;
+    }
+    .vids-track {
+      display: flex; gap: 14px; overflow: hidden;
+      max-width: 760px; justify-content: center;
+    }
+    .vthumb {
+      flex-shrink: 0; width: 200px; height: 280px;
+      border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;
+      background: #444;
+    }
+    .vthumb-inner {
+      width: 100%; height: 100%;
+      display: flex; align-items: flex-end; padding: 14px;
+      background: linear-gradient(to bottom, rgba(0,0,0,.3) 0%, rgba(0,0,0,.8) 100%);
+    }
+    .vthumb-inner p { color: #fff; font-size: 14px; font-weight: 700; line-height: 1.4; }
+    .play-icon {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(0,0,0,.65);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .play-icon::after {
+      content: '';
+      border-left: 17px solid #fff;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      margin-right: -4px;
+    }
+    .vids-arrow {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(0,0,0,.4); border: none; color: #fff;
+      font-size: 20px; cursor: pointer; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── ABOUT SPLIT ── */
+    .about-split { display: flex; min-height: 480px; }
+    .ab-photo {
+      flex: 1;
+      background: url('photo2.png') center top/cover no-repeat;
+      filter: grayscale(100%);
+    }
+    .ab-text {
+      flex: 1; background: var(--dark3);
+      padding: 60px 50px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .quote-icon { font-size: 56px; color: var(--teal); line-height: .6; margin-bottom: 28px; font-family: Georgia, serif; }
+    .ab-text p  { font-size: 14px; line-height: 2.1; color: var(--text); margin-bottom: 12px; }
+    .ab-text strong { font-weight: 700; color: #fff; }
+    .ab-text .num { color: var(--teal); font-weight: 700; }
+    .ab-text .sig { font-size: 26px; font-style: italic; color: var(--text); margin: 18px 0 22px; }
+    .btn-teal {
+      display: inline-block; padding: 10px 28px;
+      background: var(--teal); color: #fff;
+      border: none; border-radius: 4px;
+      font-family: 'Heebo', sans-serif; font-size: 15px;
+      cursor: pointer; transition: background .2s;
+    }
+    .btn-teal:hover { background: var(--teal2); }
+
+    /* ── FOOTER ── */
+    .footer { background: var(--mgray); padding: 28px 20px; text-align: center; }
+    .socials { display: flex; justify-content: center; gap: 14px; margin-bottom: 14px; }
+    .s-icon {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: #333; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background .2s;
+    }
+    .s-icon:hover { background: var(--teal); }
+    .s-icon.teal  { background: var(--teal); }
+    .s-icon svg   { width: 20px; height: 20px; fill: #fff; }
+    .footer-note  { font-size: 12px; color: #666; cursor: pointer; text-decoration: underline; }
+
+    /* ── INNER PAGE LAYOUT ── */
+    .ipage { padding-top: 45px; }
+    .ipage-hdr {
+      background: var(--lgray); color: var(--dark);
+      padding: 56px 20px 36px;
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+    }
+    .ipage-hdr h1 { font-size: 30px; font-weight: 800; }
+    .mini-logo {
+      width: 46px; height: 46px; border: 2px solid #555; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sep-dark  { height: 8px; background: var(--dark2); }
+    .sep-dark2 { height: 8px; background: var(--dark3); }
+
+    .row { display: flex; min-height: 280px; }
+    .row.inv { background: var(--dark3); }
+    .row-text {
+      flex: 1; padding: 50px 60px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .row-text.on-light { color: var(--dark); }
+    .row-text.on-dark  { color: var(--white); }
+    .row-text h2  { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .row-text h3  { font-size: 15px; font-weight: 600; color: var(--teal); margin-bottom: 18px; }
+    .row-text p   { font-size: 13px; line-height: 2.1; opacity: .88; margin-bottom: 10px; }
+    .row-img {
+      flex: 1; background: #888 center/cover no-repeat;
+      min-height: 280px;
+    }
+
+    /* ── ABOUT PAGE ── */
+    #about { padding-top: 45px; background: var(--dark3); color: var(--white); }
+    .ap-hero {
+      padding: 70px 20px 50px;
+      text-align: center;
+    }
+    .ap-hero h1 { font-size: 36px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 14px; }
+    .ap-block { background: var(--dark3); padding: 50px 40px; }
+    .ap-content {
+      max-width: 720px; margin: 0 auto;
+      font-size: 14.5px; line-height: 2.4; color: var(--text);
+      text-align: center;
+    }
+    .ap-content a { color: var(--teal); font-weight: 700; }
+    .sep-band { background: var(--dark2); padding: 6px 0; }
+    .process-block { background: var(--dark2); padding: 60px 40px; text-align: center; }
+    .process-icon { margin: 0 auto 18px; opacity: .7; }
+    .process-block h2 { font-size: 22px; font-weight: 700; margin-bottom: 28px; }
+    .process-block p { font-size: 13.5px; line-height: 2.4; color: var(--text); max-width: 680px; margin: 0 auto 6px; }
+    .why-block { background: var(--dark3); padding: 60px 40px; text-align: center; }
+    .why-block h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; }
+    .why-item { font-size: 13.5px; line-height: 2.3; color: var(--text); }
+    .why-item span { color: var(--teal); font-weight: 700; margin-left: 4px; }
+
+    /* ── TEAM PAGE ── */
+    #team { padding-top: 45px; background: var(--lgray); }
+    .team-hdr { background: var(--dark); padding: 60px 20px 40px; text-align: center; }
+    .team-hdr h1 { font-size: 34px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; gap: 14px; }
+    .team-body { background: var(--lgray); padding: 48px 40px; }
+    .team-cards { max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+    .tcard {
+      background: #f6f6f6; border: 1px solid #ddd; border-radius: 6px;
+      padding: 28px 28px 28px 28px;
+      display: flex; gap: 20px; position: relative;
+    }
+    .tcard-body { flex: 1; font-size: 13px; line-height: 2.1; color: #333; }
+    .tcard-photo {
+      width: 96px; height: 96px; border-radius: 50%;
+      object-fit: cover; flex-shrink: 0; align-self: flex-start;
+    }
+    .tcard-name {
+      position: absolute; top: -1px; left: 26px;
+      background: var(--teal); color: #fff;
+      padding: 4px 16px; border-radius: 0 0 6px 6px;
+      font-weight: 700; font-size: 13.5px;
+    }
+
+    /* accounts / family / mortgage reuse .ipage + .row */
+
+    @media (max-width: 820px) {
+      .cards-strip { flex-direction: column; align-items: center; position: static; padding: 24px 16px; background: var(--dark2); }
+      .scard { max-width: 100%; }
+      .hero { height: auto; }
+      .hero-inner { padding: 60px 20px 20px; }
+      .hero-bg { position: fixed; }
+      .about-split, .row, .ab-photo { flex-direction: column; }
+      .row-img { min-height: 220px; }
+      .ab-photo { min-height: 280px; flex: none; width: 100%; filter: grayscale(100%); }
+      .ab-text, .row-text { padding: 36px 24px; }
+      nav { flex-wrap: wrap; gap: 4px; padding: 8px; }
+      .nav-btn { font-size: 11px; padding: 4px 10px; }
+      .tcard { flex-direction: column; }
+      .tcard-photo { align-self: flex-end; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <button class="nav-btn active" data-page="home">בית</button>
+  <button class="nav-btn" data-page="insurance">ביטוחים</button>
+  <button class="nav-btn" data-page="mortgage">יעוץ משכנתא</button>
+  <button class="nav-btn" data-page="family">כלכלת המשפחה</button>
+  <button class="nav-btn" data-page="accounts">חסבונות</button>
+  <button class="nav-btn" data-page="about">אודות</button>
+  <button class="nav-btn" data-page="team">הצוות</button>
+</nav>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div id="home" class="page active">
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div class="logo-ring">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="18" r="16" stroke="currentColor" stroke-width="2"/>
+          <path d="M18 6 L28 14 L28 30 L8 30 L8 14 Z" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <path d="M13 30 L13 22 L23 22 L23 30" stroke="currentColor" stroke-width="1.8" fill="none"/>
+        </svg>
+      </div>
+      <p class="hero-sub">בית פיננסי למשפחה</p>
+      <h1 class="hero-h1">כל הפתרונות.<span>בית אחד</span></h1>
+    </div>
+    <div class="cards-strip">
+      <div class="scard">
+        <h3>חסבונות</h3>
+        <ul>
+          <li>קופת גמל</li>
+          <li>קופת גמל להשקעה</li>
+          <li>קרן השתלמות</li>
+          <li>קרן פנסיה</li>
+          <li>פוליסת חיסכון</li>
+        </ul>
+        <button class="scard-btn" data-goto="accounts">מידע נוסף &gt;</button>
+      </div>
+      <div class="scard">
+        <h3>כלכלת המשפחה</h3>
+        <ul>
+          <li>אבחון כלכלי מלא</li>
+          <li>בניית תפריט חכם</li>
+          <li>ניפול בהלואות</li>
+          <li>תכנות חיסכון</li>
+          <li>ליווי והתמדה</li>
+        </ul>
+        <button class="scard-btn" data-goto="family">מידע נוסף &gt;</button>
+      </div>
+      <div class="scard">
+        <h3>יעוץ משכנתא</h3>
+        <ul>
+          <li>בדיקת זכאות כלכלית</li>
+          <li>השוואה בין בנקים</li>
+          <li>בניית תמהיל נכון</li>
+          <li>ליווי מול הבנקים</li>
+          <li>מחזור משכנתא</li>
+        </ul>
+        <button class="scard-btn" data-goto="mortgage">מידע נוסף &gt;</button>
+      </div>
+      <div class="scard">
+        <h3>ביטוחים</h3>
+        <ul>
+          <li>ביטוח בריאות</li>
+          <li>ביטוח מחלה קשה</li>
+          <li>אובדן כושר עבודה</li>
+          <li>ביטוח חיים</li>
+          <li>ביטוח משכנתא</li>
+        </ul>
+        <button class="scard-btn" data-goto="insurance">מידע נוסף &gt;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Videos -->
+  <div class="vids-wrap">
+    <button class="vids-arrow" id="vPrev">&#8250;</button>
+    <div class="vids-track" id="vTrack">
+      <div class="vthumb">
+        <div class="vthumb-inner"><p>מיליון שקלים בגיל 60 – אני רוצה</p></div>
+        <div class="play-icon"></div>
+      </div>
+      <div class="vthumb">
+        <div class="vthumb-inner" style="align-items:center;justify-content:center;"><p style="text-align:center">תמשיכו להפריש לשם כסף</p></div>
+        <div class="play-icon"></div>
+      </div>
+      <div class="vthumb" style="background:#3a5a4a;">
+        <div class="vthumb-inner"><p>נוסף – נהלים אין</p></div>
+        <div class="play-icon"></div>
+      </div>
+    </div>
+    <button class="vids-arrow" id="vNext">&#8249;</button>
+  </div>
+
+  <!-- About split -->
+  <div class="about-split">
+    <div class="ab-photo"></div>
+    <div class="ab-text">
+      <div class="quote-icon">,,</div>
+      <p><strong>הבית הפיננסי למשפחה</strong> לא נולד מחזון גבוה או קלישאות שיווקיות. הוא נולד מהשטח. לאחר שליוויתי מעל <span class="num">1,000</span> לקוחות פרטיים ועסקיים, והבנתי שניהול הון של מאות מיליוני שקלים, הבנתי שצריך לבנות מקום שנותן מענה אמיתי לכלל הצרכים הכלכליים.</p>
+      <p>לא עוד חיפוש אחרי "מישהו שיטפל בביטוח", או "מישהו שיעזור עם המשכנתא" – אלא מקום אחד שמרכז הכל, בצורה שקופה, אישית, מקצועית.</p>
+      <p>אז לפני שנה הקמתי את <strong>הבית הפיננסי למשפחה</strong> – כי הגיע הזמן למסגרת שתיתן ללקוחות שלנו את כל הכלים, במקום אחד.</p>
+      <p class="sig">מתנאל</p>
+      <button class="btn-teal" data-goto="about">עוד עלינו</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="socials">
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.22 8.22 0 0 0 4.84 1.56V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg></div>
+      <div class="s-icon teal"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></div>
+    </div>
+    <p class="footer-note">הסכם האתר</p>
+  </div>
+</div>
+
+<!-- ═══════════ INSURANCE ═══════════ -->
+<div id="insurance" class="page ipage">
+  <div class="ipage-hdr">
+    <h1>כל הביטוחים במקום אחד</h1>
+    <div class="mini-logo">
+      <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="18" r="16" stroke="#333" stroke-width="2"/>
+        <path d="M18 6 L28 14 L28 30 L8 30 L8 14 Z" stroke="#333" stroke-width="1.8" fill="none"/>
+        <path d="M13 30 L13 22 L23 22 L23 30" stroke="#333" stroke-width="1.8" fill="none"/>
+      </svg>
+    </div>
+  </div>
+  <div class="sep-dark"></div>
+
+  <div class="row">
+    <div class="row-text on-light">
+      <h2>ביטוח בריאות – כי הבריאות לא מחכה</h2>
+      <p>הבריאות היא הדבר הכי חשוב. אבל שיפור עבדות הבריאות לא קורה לבד. ביטוח בריאות פרטי מבטיח לך גישה לרופאים מתקדמים, חסים מהם חרשות ומרפות מהירה.</p>
+      <p>אנחנו בודקים את הפרמיות ומוצאים את הכיסוי הטוב ביותר בשוק, ומלווים אותך בכל שלב.</p>
+    </div>
+    <div class="row-img" style="background-image:url('hapy.jpeg');"></div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row inv">
+    <div class="row-img" style="background-image:url('sad.jpeg');"></div>
+    <div class="row-text on-dark">
+      <h2>ביטוח מחלות קשות</h2>
+      <h3>רשת ביטחון כלכלית ברגעים הקשים</h3>
+      <p>קידי של מחלה קשה הוא רחוק מלהיות כלכלי בלבד. ביטוח מחלה קשה נותן לך שקט נפשי ומאפשר לך להתמקד בריפוי, ולא בחשבונות.</p>
+      <p>אנחנו מוצאים עבורך פוליסה מותאמת אישית, שמכסה את כל מה שחשוב.</p>
+    </div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row">
+    <div class="row-text on-light">
+      <h2>ביטוח אובדן כושר עבודה</h2>
+      <h3>הכנסה חודשית גם בשלא יכולים לעבוד</h3>
+      <p>מצב שבו נמנע ממך לעבוד הוא מאתגר הכי קשה. ביטוח אובדן כושר עבודה מבטיח הכנסה חודשית גם כשהגוף לא שיתף פעולה.</p>
+      <p>אנחנו מחפשים עבורך את הפרמיה הנמוכה ביותר עם הכיסוי הרחב ביותר.</p>
+    </div>
+    <div class="row-img" style="background-image:url('vhapy.jpeg');"></div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row inv">
+    <div class="row-img" style="background-image:url('photo.jpg');"></div>
+    <div class="row-text on-dark">
+      <h2>ביטוח חיים</h2>
+      <h3>דואגים לעתיד של מי שחשוב לך</h3>
+      <p>ביטוח חיים נועל את ביטחון של בני המשפחה. הכיסוי מבטיח לשמור על רמת חיים, לכסות הוצאות ולהבטיח לילדים עתיד יציב.</p>
+      <p>אנחנו מתאימים את הכיסוי לצרכים של כל משפחה בנפרד.</p>
+    </div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row">
+    <div class="row-text on-light">
+      <h2>ביטוח חיים למשכנתא</h2>
+      <h3>הבית הנשאר של המשפחה</h3>
+      <p>ביטוח חיים למשכנתא מבטיח שגם אם יקרה משהו, הבית יישאר בידי המשפחה ולא יצטרכו לוותר עליו.</p>
+      <p>אנחנו בודקים עבורך את ההצעות ומוצאים את הפרמיה הנמוכה ביותר בשוק.</p>
+    </div>
+    <div class="row-img" style="background-image:url('bfin.jpg');"></div>
+  </div>
+
+  <div class="footer" style="background:#d8d8d8;">
+    <div class="socials">
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.22 8.22 0 0 0 4.84 1.56V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg></div>
+      <div class="s-icon teal"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></div>
+    </div>
+    <p class="footer-note">הסכם האתר</p>
+  </div>
+</div>
+
+<!-- ═══════════ MORTGAGE ═══════════ -->
+<div id="mortgage" class="page ipage">
+  <div class="ipage-hdr">
+    <h1>יעוץ משכנתא מקצועי</h1>
+    <div class="mini-logo">
+      <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="18" r="16" stroke="#333" stroke-width="2"/>
+        <path d="M18 6 L28 14 L28 30 L8 30 L8 14 Z" stroke="#333" stroke-width="1.8" fill="none"/>
+        <path d="M13 30 L13 22 L23 22 L23 30" stroke="#333" stroke-width="1.8" fill="none"/>
+      </svg>
+    </div>
+  </div>
+  <div class="sep-dark"></div>
+
+  <div class="row">
+    <div class="row-text on-light">
+      <h2>בדיקת זכאות כלכלית</h2>
+      <p>לפני שניגשים לבנק חשוב לדעת בדיוק מה הכוח הכלכלי שלך. אנחנו בודקים את ההכנסות, ההוצאות, החסכונות וההתחייבויות הקיימות כדי לדעת מהו הסכום המרבי שתוכל לקחת.</p>
+      <p>אנחנו נבנה עבורך תמונה מלאה ושקופה של המצב הכלכלי שלך לפני הפגישה עם הבנק.</p>
+    </div>
+    <div class="row-img" style="background-image:url('bfin.jpg');"></div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row inv">
+    <div class="row-img" style="background-image:url('photo.jpg');"></div>
+    <div class="row-text on-dark">
+      <h2>השוואה בין בנקים</h2>
+      <p>אנחנו ניגשים לכל הבנקים בשמך ומשיגים את ההצעות הטובות ביותר. השוואה נכונה בין בנקים יכולה לחסוך לך עשרות אלפי שקלים לאורך תקופת המשכנתא.</p>
+      <p>לא כל הבנקים שווים – ואנחנו יודעים בדיוק איפה למצוא את ההצעה הטובה ביותר.</p>
+    </div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row">
+    <div class="row-text on-light">
+      <h2>בניית תמהיל נכון</h2>
+      <p>תמהיל המשכנתא הוא הדבר הכי חשוב. הריבית הנמוכה ביותר היום לא בהכרח אומרת שמשלמים הכי פחות לאורך זמן. אנחנו נבנה עבורך את התמהיל האופטימלי.</p>
+      <p>כל משפחה שונה – ולכן כל תמהיל שונה. אנחנו מתאימים אישית לצרכים שלך.</p>
+    </div>
+    <div class="row-img" style="background-image:url('mud.jpeg');"></div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row inv">
+    <div class="row-img" style="background-image:url('hapy.jpeg');"></div>
+    <div class="row-text on-dark">
+      <h2>ליווי מול הבנקים</h2>
+      <p>אנחנו מלווים אותך מא' עד ת' – מהגשת הבקשה ועד חתימה. נדאג שתבינו כל שלב ולא תהיו לבד מול הבנק.</p>
+      <p>הניסיון שלנו עם מאות משכנתאות מאפשר לנו לנווט בין המורכבויות הבירוקרטיות בקלות.</p>
+    </div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row">
+    <div class="row-text on-light">
+      <h2>מחזור משכנתא</h2>
+      <p>כבר יש לך משכנתא? ייתכן שתוכל לחסוך אלפי שקלים בחודש! אנחנו בודקים מתי כדאי למחזר ואיך לעשות זאת נכון.</p>
+      <p>ירידת ריביות בשוק, שינוי בהכנסות, או פשוט רצון לשפר תנאים – כולם סיבות טובות לבדוק מחזור.</p>
+    </div>
+    <div class="row-img" style="background-image:url('photo2.png');"></div>
+  </div>
+
+  <div class="footer" style="background:#d8d8d8;">
+    <div class="socials">
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.22 8.22 0 0 0 4.84 1.56V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg></div>
+      <div class="s-icon teal"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></div>
+    </div>
+    <p class="footer-note">הסכם האתר</p>
+  </div>
+</div>
+
+<!-- ═══════════ FAMILY FINANCE ═══════════ -->
+<div id="family" class="page ipage">
+  <div class="ipage-hdr">
+    <h1>כלכלת המשפחה</h1>
+    <div class="mini-logo">
+      <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="18" r="16" stroke="#333" stroke-width="2"/>
+        <path d="M18 6 L28 14 L28 30 L8 30 L8 14 Z" stroke="#333" stroke-width="1.8" fill="none"/>
+        <path d="M13 30 L13 22 L23 22 L23 30" stroke="#333" stroke-width="1.8" fill="none"/>
+      </svg>
+    </div>
+  </div>
+  <div class="sep-dark"></div>
+
+  <div class="row">
+    <div class="row-text on-light">
+      <h2>אבחון כלכלי מלא</h2>
+      <p>הצעד הראשון הוא להבין את התמונה המלאה. אנחנו בונים יחד אתך אפיון מפורט של ההכנסות וההוצאות, ומגלים לאן הולך הכסף.</p>
+      <p>תהיו מופתעים לגלות כמה כסף אפשר לחסוך רק מהבנה נכונה של ההוצאות.</p>
+    </div>
+    <div class="row-img" style="background-image:url('hapy.jpeg');"></div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row inv">
+    <div class="row-img" style="background-image:url('photo.jpg');"></div>
+    <div class="row-text on-dark">
+      <h2>בניית תפריט חכם</h2>
+      <p>השוואה בין בנקים ומשאבים פיננסיים, הבניית תפריט חיסכון חכם שמתאים לאורח החיים שלך ולמטרות שהצבת לעצמך.</p>
+      <p>אנחנו נלמד אותך לחיות טוב יותר עם אותו כסף, תוך צבירת חיסכון משמעותי.</p>
+    </div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row">
+    <div class="row-text on-light">
+      <h2>ניפול בהלוואות</h2>
+      <p>הלוואות יכולות להיות נטל כבד. אנחנו מסדרים את ההלוואות שלך, מסלקים את היקרות ביותר קודם, ובונים תוכנית יציאה מחובות.</p>
+      <p>ליווי צמוד עד שהמשפחה חופשית מהלוואות מיותרות.</p>
+    </div>
+    <div class="row-img" style="background-image:url('bfin.jpg');"></div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row inv">
+    <div class="row-img" style="background-image:url('vhapy.jpeg');"></div>
+    <div class="row-text on-dark">
+      <h2>ליווי והתמדה</h2>
+      <p>לא מספיק לבנות תוכנית – צריך לממש אותה. אנחנו מלווים אותך לאורך זמן, עוקבים אחרי ההתקדמות ומסייעים כשיש אתגרים.</p>
+      <p>מעקב חודשי, בדיקות תקופתיות ועדכונים לפי שינויים בחיים.</p>
+    </div>
+  </div>
+
+  <div class="footer" style="background:#d8d8d8;">
+    <div class="socials">
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.22 8.22 0 0 0 4.84 1.56V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg></div>
+      <div class="s-icon teal"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></div>
+    </div>
+    <p class="footer-note">הסכם האתר</p>
+  </div>
+</div>
+
+<!-- ═══════════ ACCOUNTS ═══════════ -->
+<div id="accounts" class="page ipage">
+  <div class="ipage-hdr">
+    <h1>חסבונות וחסכונות</h1>
+    <div class="mini-logo">
+      <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="18" r="16" stroke="#333" stroke-width="2"/>
+        <path d="M18 6 L28 14 L28 30 L8 30 L8 14 Z" stroke="#333" stroke-width="1.8" fill="none"/>
+        <path d="M13 30 L13 22 L23 22 L23 30" stroke="#333" stroke-width="1.8" fill="none"/>
+      </svg>
+    </div>
+  </div>
+  <div class="sep-dark"></div>
+
+  <div class="row">
+    <div class="row-text on-light">
+      <h2>קופת גמל</h2>
+      <p>קופת גמל היא כלי חיסכון לטווח ארוך עם הטבות מס משמעותיות. הכספים צוברים תשואה לאורך שנים ומאפשרים לך לצאת לפנסיה עם סכום נכבד.</p>
+      <p>אנחנו בוחרים עבורך את קופת הגמל הטובה ביותר עם דמי הניהול הנמוכים ביותר.</p>
+    </div>
+    <div class="row-img" style="background-image:url('bfin.jpg');"></div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row inv">
+    <div class="row-img" style="background-image:url('photo.jpg');"></div>
+    <div class="row-text on-dark">
+      <h2>קופת גמל להשקעה</h2>
+      <p>קופת גמל להשקעה מאפשרת חיסכון גמיש עם הטבות מס. ניתן למשוך את הכספים בכל עת, וליהנות מפטור ממס רווחי הון בגיל הפרישה.</p>
+      <p>כלי מצוין לחיסכון לטווח בינוני-ארוך עם גמישות מלאה.</p>
+    </div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row">
+    <div class="row-text on-light">
+      <h2>קרן השתלמות</h2>
+      <p>קרן השתלמות היא אחד הכלים הפיננסים הטובים ביותר בישראל. הטבות מס עצומות, נזילות לאחר 6 שנים, ואפשרות לצבור סכומים גדולים.</p>
+      <p>אנחנו מוודאים שאתה מנצל את קרן ההשתלמות שלך במקסימום.</p>
+    </div>
+    <div class="row-img" style="background-image:url('hapy.jpeg');"></div>
+  </div>
+  <div class="sep-dark2"></div>
+
+  <div class="row inv">
+    <div class="row-img" style="background-image:url('vhapy.jpeg');"></div>
+    <div class="row-text on-dark">
+      <h2>קרן פנסיה ופוליסת חיסכון</h2>
+      <p>קרן פנסיה מבטיחה לך הכנסה חודשית בגיל הפרישה. פוליסת חיסכון מוסיפה גמישות ואפשרויות השקעה מגוונות.</p>
+      <p>אנחנו בונים עבורך תמהיל אופטימלי שיבטיח פרישה נוחה ומכובדת.</p>
+    </div>
+  </div>
+
+  <div class="footer" style="background:#d8d8d8;">
+    <div class="socials">
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.22 8.22 0 0 0 4.84 1.56V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg></div>
+      <div class="s-icon teal"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></div>
+    </div>
+    <p class="footer-note">הסכם האתר</p>
+  </div>
+</div>
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<div id="about" class="page" style="padding-top:45px; background:var(--dark3); color:var(--white);">
+  <div style="background:var(--dark3); padding:70px 20px 40px;">
+    <h1 style="font-size:34px;font-weight:900;text-align:center;">מי אנחנו?</h1>
+  </div>
+  <div style="background:var(--dark3); padding:0 20px 50px;">
+    <div class="ap-content">
+      <p>אנחנו גורמי שלומות המשפחה לאורך החיים. לא טובי מציאות לבד. לא טובי עסקה לבד. אנחנו טובי שלושת הדברים.</p>
+      <p>לא טובי תמזון הכבודות שלנו. לבנות אנחנו יודעים את הקשר שלנו. לנהל כן אנחנו יודעים לשמור לגן.</p>
+      <p>נהלות אנחנו, אנחנו טובים. ובונים יודע את התחום שלנו. לדאוג לאנשים – בן חזנון – בן לאמצים.</p>
+      <p>לבלות אנחנו יודעים לגנות – לחלמות של הפינות.</p>
+      <p style="color:var(--teal); font-weight:700;">ההמחמות שלנו הן חירורים.</p>
+      <p>לממצאים – לאנשים. בן חזנון – בן לאמצים.</p>
+      <p>לאחסנות בן – לחלמות הלכלות של הפינות. בן לחלמות של היום.</p>
+    </div>
+  </div>
+
+  <div style="background:var(--dark2); height:8px;"></div>
+
+  <div class="process-block">
+    <div class="process-icon">
+      <svg width="60" height="30" viewBox="0 0 60 30" fill="none">
+        <path d="M5 15 Q15 5 30 15 Q45 25 55 15" stroke="var(--teal)" stroke-width="2.5" fill="none"/>
+        <path d="M5 15 Q15 25 30 15 Q45 5 55 15" stroke="var(--teal)" stroke-width="2.5" fill="none" opacity=".5"/>
+      </svg>
+    </div>
+    <h2>איך אנחנו עושים את זה</h2>
+    <p>אנחנו מרכזים עצמכם את כל ניהול הפיננסי תחת קורת לגי אחת מהם. אנחנו לא חתמנים בראות, אנחנו לא רועים נמצאים בדאות הכלכליים.</p>
+    <p>אנחנו בנינו את כל הנסיעות מלוים שניוחים הכלים הלכלכליים לתחלכלות.</p>
+    <p>אנחנו מתנים את בגא הנסיעות ואת ישיבות לחשות מלכות אנחנו. מנהגי תחלות ישיבות, מנהנות בכנחים בהכנות הפינות.</p>
+    <p>מנחנות לחשוב חמות, צמחים, גנחים, מתחים רגורנים שמגאים אחד. תמחי הלכות, תמחי לחיות ומחנות מנח. הנחנות לחיות, הקנות, מוחנות חחינות.</p>
+    <p>אנחנו שמירים עצמים שלהם בהפסרים שניות, מנחים, מנחנות, גנחים לחח שאנחנו נמצחים אחד זמן.</p>
+  </div>
+
+  <div style="background:var(--dark3); padding:60px 40px; text-align:center;">
+    <div style="margin:0 auto 18px; opacity:.7;">
+      <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
+        <circle cx="18" cy="18" r="6" stroke="var(--teal)" stroke-width="2"/>
+        <circle cx="32" cy="18" r="6" stroke="var(--teal)" stroke-width="2"/>
+        <circle cx="25" cy="32" r="6" stroke="var(--teal)" stroke-width="2"/>
+      </svg>
+    </div>
+    <h2 style="font-size:20px;font-weight:700;margin-bottom:20px;">אנחנו רואים את התהליך הלישי</h2>
+    <p style="font-size:13.5px;line-height:2.4;color:var(--text);max-width:680px;margin:0 auto 6px;">אנחנו מתחדלים בשיחת בניהם אנחנו מי שיים חשים בחרים הלכלות בנכלי בנית הלכלות. מגנות מנאגים ריות פניות בנניות עצמינות ולכגלות להתחיל.</p>
+    <p style="font-size:13.5px;line-height:2.4;color:var(--text);max-width:680px;margin:0 auto 6px;">אנחנו לא תחנות מסיפרים לאחרות, אלא אנחנו רואים עליות עם הביצוע של אורח שחי.</p>
+    <p style="font-size:13.5px;line-height:2.4;color:var(--text);max-width:680px;margin:0 auto 6px;">יתקנים לנחנות הרדנות להשתחות מלנחנות שמתים.</p>
+    <p style="font-size:13.5px;line-height:2.4;color:var(--text);max-width:680px;margin:0 auto 6px;">אלנות, תנחנות בגנחים שמתים גינות, נעשנות שיש בן הנחלות שלנו לחתחיל.</p>
+  </div>
+
+  <div style="background:var(--dark3); padding:60px 40px; text-align:center; border-top: 1px solid #333;">
+    <div style="margin:0 auto 18px;">
+      <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
+        <circle cx="16" cy="16" r="8" stroke="var(--teal)" stroke-width="2"/>
+        <circle cx="34" cy="16" r="8" stroke="var(--teal)" stroke-width="2"/>
+        <path d="M8 40 Q16 30 25 40 Q34 30 42 40" stroke="var(--teal)" stroke-width="2" fill="none"/>
+      </svg>
+    </div>
+    <h2 style="font-size:20px;font-weight:700;margin-bottom:20px;">למה משפחות בוחרות להישאר לאורך זמן?</h2>
+    <p style="font-size:13.5px;line-height:2.4;color:var(--text);max-width:620px;margin:0 auto 6px;"><span style="color:var(--teal);font-weight:700;">כי</span> יש לאן לחזור מחוזק, ואנו מחיים שמחוזק חיים שלנו.</p>
+    <p style="font-size:13.5px;line-height:2.4;color:var(--text);max-width:620px;margin:0 auto 6px;"><span style="color:var(--teal);font-weight:700;">כי</span> יש פה ראיה רחבה, אנו יכולה לדרת לדרת.</p>
+    <p style="font-size:13.5px;line-height:2.4;color:var(--text);max-width:620px;margin:0 auto 6px;"><span style="color:var(--teal);font-weight:700;">כי</span> זה מרגיש איש אחד, נשאר עם הזמן, ואנשאו עולה אמת.</p>
+    <p style="font-size:13.5px;line-height:2.4;color:var(--text);max-width:620px;margin:0 auto 6px;"><span style="color:var(--teal);font-weight:700;">כי</span> לב לגן איש אחד, עם הזמן, עמקנו עמוקה, ואנשאו לבד.</p>
+    <p style="font-size:13.5px;line-height:2.4;color:var(--text);max-width:620px;margin:0 auto 6px;"><span style="color:var(--teal);font-weight:700;">כי</span> ברגעים שמתחנות הנחלות לגנות, לא נשאנות אחת לכלכלות בלבד.</p>
+  </div>
+
+  <div class="footer" style="background:#c8c8c8;">
+    <div class="socials">
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.22 8.22 0 0 0 4.84 1.56V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg></div>
+      <div class="s-icon teal"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></div>
+    </div>
+    <p class="footer-note">הסכם האתר</p>
+  </div>
+</div>
+
+<!-- ═══════════ TEAM ═══════════ -->
+<div id="team" class="page">
+  <div class="team-hdr" style="padding-top:60px;">
+    <h1>
+      מי אנחנו?
+      <div class="mini-logo" style="border-color:#aaa;">
+        <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="18" r="16" stroke="#aaa" stroke-width="2"/>
+          <path d="M18 6 L28 14 L28 30 L8 30 L8 14 Z" stroke="#aaa" stroke-width="1.8" fill="none"/>
+          <path d="M13 30 L13 22 L23 22 L23 30" stroke="#aaa" stroke-width="1.8" fill="none"/>
+        </svg>
+      </div>
+    </h1>
+  </div>
+
+  <div class="team-body">
+    <div class="team-cards">
+
+      <div class="tcard">
+        <div class="tcard-name">מתנאל בלנל</div>
+        <div class="tcard-body">
+          מי זה התחום הכי יותר ללמוש לגישות פרמיות. בקמטי אנחנו מחפשות בנגות, זה שמחשוב אמת, הקמתי אחת "הבית הפיננסי למשפחה". גשתי שלמות – אבל מה שחשוב בגוש אחת, זה שמחשוב אמת. מה שמחשוב אחת זה עצם. הגישה שלנו: לא שהגישה לא קמנות, לא שהגישה אינה מנגיחות – אלא שהגישה הממשנות, שהנות, מחנות, נגמות, שנות אנחנו גישות. ישיבות שניות. אחות גדולות בכל הלכות הממשנות – לא של הנמכלות הממשנות – אלא של הלחות גנות עצמות.
+        </div>
+        <img class="tcard-photo" src="YON.JPEG" alt="מתנאל בלנל" onerror="this.style.background='#5db5a8';this.src='';this.alt='';">
+      </div>
+
+      <div class="tcard">
+        <div class="tcard-name">מינו רוויינד</div>
+        <div class="tcard-body">
+          מלוות משפחות בדרך לכלכלת ראשה, בדרדה ובגנות. מממשים אמיצים בחור ניביאות הישל של ניהולים שיניוחות נגמות ואת נגמות הממשנות – אז לגמות ראות לאחוף. הגישה שלנו: לאחוף לקח גמות, הגישה שלנו ממגות ובכדי ראות לגנות כנות – שניות לאחוף. כין ווחנות עם המשפחות שלהן, לפנות לפות מחנות, לחשות ותגדות ולנדות אנחנו. שנות, שגות על בחות גנות בנות, אחנות אנחנו.
+        </div>
+        <img class="tcard-photo" src="SHAY.jpg" alt="מינו רוויינד" onerror="this.style.background='#5db5a8';this.src='';this.alt='';">
+      </div>
+
+      <div class="tcard">
+        <div class="tcard-name">דניאל נגר</div>
+        <div class="tcard-body">
+          דניאל הוא האיש שלנו כל מה שנהיות לחסבונות, לפרשות ובגנות. דניאל רואה בכלכלות ראשה, הוא רוצה לראות חסחנות. לא רק בנות בנות בנות עצמה, לא רק בנות ראות ראות בנות, לא רק שנות עצמה. בין זה ית משכנות לאחנות, מחנות מחנות שמכלות אחת על הגנחות, מחנות אחנות מלגנות. גנות, לגנות, מחנות, לחגות שיש בן הנחלות שלנו לחתחיל. גנות לגנות, אחנות מחנות לחגות.
+        </div>
+        <img class="tcard-photo" src="REG.jpeg" alt="דניאל נגר" onerror="this.style.background='#5db5a8';this.src='';this.alt='';">
+      </div>
+
+      <div class="tcard">
+        <div class="tcard-name">ליל בלנל</div>
+        <div class="tcard-body">
+          ליל היא הלב הפועם של המיחשור. הנ ית שנמחה לכן כל הנטשות, תנחלות, תנחמות גנות ובנות. בנות בנמחה בהמחה והגישות הראשניות. ליל מרחנות עצמה לנחות לנשיות לחבות. תנגות גרות ובנות לנחות, לחנות עד לנחות מנות. עם תקנות עם תנסיות הגישנות מחנות לחנות. לא יחוף בין הנקסות, תנגות ונות, מגנות ישנות, מחנות שראות לא יחוף לנחות לנות.
+        </div>
+        <img class="tcard-photo" src="lavi.png" alt="ליל בלנל" onerror="this.style.background='#5db5a8';this.src='';this.alt='';">
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer" style="background:#c8c8c8;">
+    <div class="socials">
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.22 8.22 0 0 0 4.84 1.56V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg></div>
+      <div class="s-icon teal"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+      <div class="s-icon"><svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></div>
+    </div>
+    <p class="footer-note">הסכם האתר</p>
+  </div>
+</div>
+
+<script>
+  // Navigation
+  document.querySelectorAll('[data-page]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.page;
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('[data-page]').forEach(b => b.classList.remove('active'));
+      document.getElementById(target).classList.add('active');
+      document.querySelectorAll('[data-page="' + target + '"]').forEach(b => b.classList.add('active'));
+      window.scrollTo(0,0);
+    });
+  });
+
+  // Card buttons
+  document.querySelectorAll('[data-goto]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.goto;
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('[data-page]').forEach(b => b.classList.remove('active'));
+      document.getElementById(target).classList.add('active');
+      document.querySelectorAll('[data-page="' + target + '"]').forEach(b => b.classList.add('active'));
+      window.scrollTo(0,0);
+    });
+  });
+</script>
+</body>
+</html>

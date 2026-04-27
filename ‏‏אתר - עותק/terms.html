@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>תנאי שימוש | חכמת האוטומציה</title>
+  <meta name="robots" content="noindex">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Heebo:wght@700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --teal:      #5BC0D3;
+      --teal-text: #1B7A8C;
+      --navy:      #252e62;
+      --navy-mid:  #404675;
+      --light:     #F3F3F3;
+      --white:     #ffffff;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      direction: rtl;
+      font-family: 'Assistant', sans-serif;
+      font-size: 17px;
+      color: var(--navy);
+      background: var(--light);
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Navbar ── */
+    #navbar {
+      position: fixed; top: 0; right: 0; left: 0;
+      z-index: 999;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 1px 24px rgba(37,46,98,0.10);
+      border-bottom: 1px solid rgba(91,192,211,0.18);
+    }
+    .nav-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+    .nav-logo img { height: 60px; width: auto; }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--navy-mid);
+      font-size: 0.92rem; font-weight: 600;
+      padding: 8px 18px;
+      border: 1.5px solid rgba(37,46,98,0.18);
+      border-radius: 50px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-back:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+
+    /* ── Hero ── */
+    .page-hero {
+      background: var(--navy);
+      padding: 120px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(91,192,211,0.12) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+    .page-hero h1 {
+      font-family: 'Heebo', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .page-hero p {
+      color: rgba(255,255,255,0.60);
+      font-size: 0.95rem;
+      position: relative;
+    }
+    .page-hero .teal-line {
+      display: inline-block;
+      width: 48px; height: 4px;
+      background: var(--teal);
+      border-radius: 2px;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    /* ── Content ── */
+    .page-content {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 52px 56px;
+      margin: -32px auto 60px;
+      position: relative;
+      box-shadow: 0 8px 40px rgba(37,46,98,0.10);
+    }
+
+    .page-content h2 {
+      font-family: 'Heebo', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--navy);
+      margin-top: 40px;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid rgba(91,192,211,0.25);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .page-content h2:first-of-type { margin-top: 0; }
+    .page-content h2::before {
+      content: '';
+      width: 4px; height: 22px;
+      background: var(--teal);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .page-content h3 {
+      font-family: 'Heebo', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy-mid);
+      margin-top: 22px;
+      margin-bottom: 10px;
+    }
+
+    .page-content p {
+      color: #4a5568;
+      line-height: 1.85;
+      margin-bottom: 14px;
+      font-size: 1rem;
+    }
+
+    .page-content ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .page-content ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: #4a5568;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+    .page-content ul li::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+
+    .page-content a {
+      color: var(--teal-text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .page-content a:hover { opacity: 0.8; }
+
+    .page-updated {
+      display: inline-block;
+      background: rgba(91,192,211,0.10);
+      border: 1px solid rgba(91,192,211,0.25);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 0.82rem;
+      color: var(--teal-text);
+      font-weight: 600;
+      margin-bottom: 32px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--navy);
+      padding: 28px 0;
+      text-align: center;
+    }
+    footer p { color: rgba(255,255,255,0.55); font-size: 0.88rem; }
+    footer a { color: var(--teal); transition: opacity 0.2s; }
+    footer a:hover { opacity: 0.75; }
+
+    @media (max-width: 640px) {
+      .page-content { padding: 32px 22px; margin: -20px auto 40px; }
+      .page-hero { padding: 100px 0 50px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav id="navbar" aria-label="ניווט ראשי">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="חכמת האוטומציה - דף הבית">
+        <img src="logo-03.png" alt="חכמת האוטומציה" onerror="this.style.display='none'">
+      </a>
+      <a href="index.html" class="nav-back">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        חזרה לאתר
+      </a>
+    </div>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <div class="teal-line"></div>
+        <h1>תנאי שימוש</h1>
+        <p>עודכן לאחרונה: מרץ 2026</p>
+      </div>
+    </section>
+
+    <!-- Content -->
+    <div class="container">
+      <article class="page-content">
+
+        <div class="page-updated">📅 תחולה: מרץ 2026 · חכמת האוטומציה — אריאל וייג, ע.פ. 200399723</div>
+
+        <h2>כללי</h2>
+        <p>
+          ברוכים הבאים לאתר <strong>חכמת האוטומציה</strong> (autowise-ai.com), המופעל על ידי אריאל וייג, עוסק פטור מס' 200399723 (להלן: "נותן השירות").
+        </p>
+        <p>
+          השימוש באתר ובשירותים המוצעים בו מהווה הסכמה מלאה לתנאי שימוש אלה. אם אינך מסכים לתנאים, אנא הימנע משימוש באתר.
+        </p>
+        <p>
+          תנאים אלה כפופים לדין הישראלי, לרבות חוק החוזים (חלק כללי), התשל"ג–1973, וחוק הגנת הצרכן, התשמ"א–1981.
+        </p>
+
+        <h2>השירותים המוצעים</h2>
+        <p>חכמת האוטומציה מציעה שירותים עסקיים בתחום הטכנולוגיה, ובכלל זה:</p>
+        <ul>
+          <li>בניית אוטומציות עסקיות (Make, n8n, Zapier וכדומה)</li>
+          <li>פיתוח צ'אטבוטים לוואטסאפ וסוכני AI</li>
+          <li>אינטגרציה בין מערכות ופתרונות CRM</li>
+          <li>ייעוץ וליווי בתהליכי דיגיטציה עסקית</li>
+        </ul>
+        <p>
+          הצעות המחיר, היקף העבודה ולוחות הזמנים מפורטים בהסכמים נפרדים שנחתמים עם כל לקוח. תנאי שימוש אלה אינם מהווים הסכם שירות.
+        </p>
+
+        <h2>שימוש מותר באתר</h2>
+        <p>השימוש באתר מותר למטרות לגיטימיות בלבד. אסור:</p>
+        <ul>
+          <li>להשתמש באתר למטרות בלתי חוקיות או פוגעניות</li>
+          <li>לנסות לפרוץ, לסרוק או להפריע לתפקוד האתר</li>
+          <li>להעתיק, לשכפל או להפיץ תכנים מהאתר ללא רשות מפורשת בכתב</li>
+          <li>לשלוח דואר זבל (spam) דרך טפסי יצירת הקשר</li>
+          <li>להתחזות לגורם אחר בעת יצירת קשר</li>
+        </ul>
+
+        <h2>קניין רוחני</h2>
+        <p>
+          כל התכנים באתר — לרבות טקסטים, עיצוב, לוגו, גרפיקה, קוד ותוכנת הסימולטור — הם רכושו הבלעדי של נותן השירות או ניתנו לו ברישיון, ומוגנים בחוקי זכויות היוצרים.
+        </p>
+        <p>
+          אין לעשות כל שימוש מסחרי בתכנים אלה ללא הסכמה מפורשת בכתב מנותן השירות.
+        </p>
+
+        <h2>דיוק המידע באתר</h2>
+        <p>
+          המידע המוצג באתר — לרבות הסימולטור לחישוב עלות אי-מענה ללידים — מסופק למטרות מידע כללי בלבד ומבוסס על מחקרים אקדמיים שפורסמו. אין לראות בו ייעוץ עסקי, משפטי או פיננסי מחייב.
+        </p>
+        <p>
+          נותן השירות שומר לעצמו את הזכות לעדכן, לשנות או להסיר תכנים מהאתר בכל עת וללא הודעה מוקדמת.
+        </p>
+
+        <h2>הגבלת אחריות</h2>
+        <p>
+          האתר ותכניו מסופקים "כמות שהם" (AS IS). נותן השירות אינו אחראי לכל נזק ישיר, עקיף, מקרי או תוצאתי הנובע משימוש באתר, לרבות:
+        </p>
+        <ul>
+          <li>הסתמכות על מידע המוצג באתר</li>
+          <li>תקלות טכניות, הפסקות שירות או אובדן נתונים</li>
+          <li>תכנים של צדדים שלישיים המקושרים מהאתר</li>
+        </ul>
+        <p>
+          בכל מקרה, אחריותו המקסימלית של נותן השירות לא תעלה על הסכום ששולם עבור השירות הספציפי שבגינו נדרשת האחריות.
+        </p>
+
+        <h2>קישורים חיצוניים</h2>
+        <p>
+          האתר עשוי לכלול קישורים לאתרים חיצוניים (כגון מחקרים אקדמיים). קישורים אלה מסופקים לנוחות בלבד. נותן השירות אינו אחראי לתוכן, מדיניות הפרטיות או זמינות האתרים החיצוניים.
+        </p>
+
+        <h2>שירותי צד שלישי</h2>
+        <p>האתר משתמש בשירותים חיצוניים הבאים:</p>
+        <ul>
+          <li><strong>Google Analytics 4</strong> — ניתוח תנועה באתר, בכפוף להסכמת המשתמש</li>
+          <li><strong>Google Fonts</strong> — טעינת גופנים</li>
+          <li><strong>Boti</strong> — ווידג'ט צ'אט</li>
+        </ul>
+        <p>השימוש בשירותים אלה כפוף למדיניות הפרטיות שלהם בנפרד.</p>
+
+        <h2>סיום וחסימה</h2>
+        <p>
+          נותן השירות שומר לעצמו את הזכות לחסום גישה לאתר לכל משתמש שפועל בניגוד לתנאי השימוש, וזאת ללא הודעה מוקדמת.
+        </p>
+
+        <h2>דין חל וסמכות שיפוטית</h2>
+        <p>
+          תנאי שימוש אלה יפורשו בהתאם לדין הישראלי. סמכות השיפוט הבלעדית לכל מחלוקת הנובעת מתנאים אלה תהיה לבתי המשפט המוסמכים במחוז תל אביב–יפו.
+        </p>
+
+        <h2>שינויים בתנאים</h2>
+        <p>
+          נותן השירות רשאי לעדכן תנאים אלה מעת לעת. השינויים ייכנסו לתוקף עם פרסומם באתר. המשך השימוש באתר לאחר השינוי מהווה הסכמה לתנאים המעודכנים.
+        </p>
+
+        <h2>יצירת קשר</h2>
+        <p>לכל שאלה בנוגע לתנאי שימוש אלה:</p>
+        <ul>
+          <li>דוא"ל: <a href="mailto:ariel@autowise-ai.com">ariel@autowise-ai.com</a></li>
+          <li>אתר: <a href="index.html">autowise-ai.com</a></li>
+        </ul>
+
+      </article>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2026 חכמת האוטומציה | אריאל וייג | ע.פ. 200399723 | <a href="mailto:ariel@autowise-ai.com">ariel@autowise-ai.com</a> | <a href="privacy.html">מדיניות פרטיות</a> | <a href="terms.html">תנאי שימוש</a> | <a href="accessibility.html">הצהרת נגישות</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>

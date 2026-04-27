@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>סוכן-מכירות AI | חכמת האוטומציה</title>
+  <meta name="description" content="סוכן AI שמנהל תהליך מכירה מלא מהפנייה הראשונה ועד לסגירה - גם בלילה, גם בשבת.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Heebo:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:      #5BC0D3;
+      --teal-dark: #1B7A8C;
+      --navy:      #252e62;
+      --navy-mid:  #404675;
+      --light:     #F3F3F3;
+      --white:     #ffffff;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Assistant', sans-serif;
+      color: var(--navy);
+      background: var(--white);
+      direction: rtl;
+      line-height: 1.7;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .topbar-logo {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: 1.1rem;
+      color: var(--white); text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .topbar-logo span { color: var(--teal); }
+    .topbar-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.75); text-decoration: none;
+      font-size: 0.9rem; font-weight: 600;
+      transition: color 0.2s;
+    }
+    .topbar-back:hover { color: var(--teal); }
+    .topbar-back svg { width: 16px; height: 16px; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a2050 60%, #0d1433 100%);
+      padding: 80px 24px 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(91,192,211,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(91,192,211,0.15);
+      border: 1px solid rgba(91,192,211,0.35);
+      color: var(--teal); font-size: 0.82rem; font-weight: 700;
+      padding: 6px 16px; border-radius: 50px;
+      margin-bottom: 24px; letter-spacing: 0.04em;
+    }
+    .hero h1 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.9rem, 4vw, 2.8rem);
+      color: var(--white);
+      line-height: 1.25;
+      max-width: 820px; margin: 0 auto 24px;
+    }
+    .hero h1 em { color: var(--teal); font-style: normal; }
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: rgba(255,255,255,0.75);
+      max-width: 700px; margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* ── CONTAINER ── */
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── INTRO ── */
+    .intro {
+      padding: 72px 24px;
+      background: var(--white);
+    }
+    .section-label {
+      display: inline-block;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--teal-dark); text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .intro h2 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--navy); margin-bottom: 20px;
+      line-height: 1.3;
+    }
+    .teal-line {
+      width: 48px; height: 4px;
+      background: var(--teal); border-radius: 2px;
+      margin-bottom: 20px;
+    }
+
+    /* ── FEATURES ── */
+    .features { background: var(--light); padding: 72px 24px; }
+    .features-title {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+      color: var(--navy); text-align: center;
+      margin-bottom: 48px;
+    }
+    .features-list {
+      display: flex; flex-direction: column; gap: 20px;
+      max-width: 900px; margin: 0 auto;
+    }
+    .feature-row {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 28px 32px;
+      display: flex; align-items: flex-start; gap: 22px;
+      box-shadow: 0 4px 20px rgba(37,46,98,0.07);
+      border: 1.5px solid transparent;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+    .feature-row:hover {
+      border-color: rgba(91,192,211,0.3);
+      transform: translateX(-4px);
+      box-shadow: 0 8px 32px rgba(91,192,211,0.13);
+    }
+    .feature-icon {
+      width: 52px; height: 52px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--navy) 0%, #3d4f8c 100%);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .feature-icon svg {
+      width: 24px; height: 24px;
+      stroke: var(--teal); fill: none;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .feature-text h3 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 700; font-size: 1.1rem;
+      color: var(--navy); margin-bottom: 8px;
+    }
+    .feature-text p { font-size: 0.97rem; color: #4a5568; line-height: 1.7; }
+
+    /* ── CLOSING SECTION ── */
+    .closing {
+      padding: 72px 24px;
+      background: var(--white);
+      text-align: center;
+    }
+    .closing h2 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.5rem, 2.5vw, 2rem);
+      color: var(--navy); margin-bottom: 18px;
+    }
+    .closing p {
+      font-size: 1.05rem; color: #4a5568;
+      max-width: 640px; margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a2050 100%);
+      padding: 72px 24px;
+      text-align: center;
+    }
+    .cta-section h2 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      color: var(--white); margin-bottom: 18px;
+    }
+    .cta-section p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.75);
+      max-width: 620px; margin: 0 auto 40px;
+      line-height: 1.8;
+    }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: #25D366;
+      color: var(--white);
+      font-family: 'Heebo', sans-serif;
+      font-weight: 700; font-size: 1.05rem;
+      padding: 18px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 8px 30px rgba(37,211,102,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 14px 40px rgba(37,211,102,0.5);
+    }
+    .cta-btn svg { width: 24px; height: 24px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0d1433;
+      padding: 32px 24px;
+      text-align: center;
+    }
+    footer p { color: rgba(255,255,255,0.45); font-size: 0.85rem; }
+    footer a { color: var(--teal); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .topbar { padding: 12px 16px; }
+      .feature-row { flex-direction: column; gap: 14px; padding: 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <nav class="topbar">
+    <a href="index.html" class="topbar-logo">
+      חכמת <span>האוטומציה</span>
+    </a>
+    <a href="index.html#services" class="topbar-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+      חזרה לשירותים
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">✦ סוכן-מכירות AI</div>
+    <h1>סוכן המכירות שלא עוצר לרגע<br><em>(וסוגר עסקאות בזמן שאתם ישנים)</em></h1>
+    <p>
+      השקעתם בפרסום ממומן או בתוכן אורגני, והלידים מתחילים לזרום.
+      אבל בעולם של היום, ליד שלא קיבל מענה תוך דקות הוא ליד אבוד.
+      כאן נכנס לתמונה סוכן ה-AI הממולח שלנו – הוא לא רק עונה על שאלות,
+      הוא מנהל תהליך מכירה מלא מהפנייה הראשונה ועד לסגירה.
+    </p>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="container">
+      <h2 class="features-title">מה הופך אותו למכונת מכירות משומנת?</h2>
+      <div class="features-list">
+
+        <div class="feature-row">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h3>טיפול מקצועי בהתנגדויות</h3>
+            <p>ה-AI מאומן לזהות התלבטויות של לקוחות (כמו "יקר לי" או "אני צריך לחשוב על זה"), לענות עליהן בצורה אינטליגנטית ולהשאיר את העסקה בחיים.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <line x1="12" y1="1" x2="12" y2="23"/>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h3>מחירון דינמי וחכם</h3>
+            <p>הבוט יודע להציג מחירים מתוך רשימה קבועה או לחשב מחיר משתנה בהתאם לצרכי הלקוח באותו הרגע - בלי לערב אתכם בכל שאלה.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <polyline points="9 11 12 14 22 4"/>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h3>סגירת קצוות אוטומטית</h3>
+            <p>שליחת קישור לתשלום, תיאום פגישת מכירה ביומן או הפקת הצעת מחיר - הכל קורה בתוך השיחה ללא מגע יד אדם.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="5" y="2" width="14" height="20" rx="2"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h3>זמינות רב-ערוצית</h3>
+            <p>הוא פועל עבורכם בוואטסאפ, באינסטגרם, בטלגרם ואפילו כמענה קולי או במייל - כך שאתם לא מפספסים אף לקוח, בשום פלטפורמה.</p>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <ellipse cx="12" cy="5" rx="9" ry="3"/>
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h3>עדכון מערכות בזמן אמת</h3>
+            <p>הבוט מעדכן את ה-CRM או את טבלאות העסק שלכם באופן אוטומטי, ושולח לכם התראה רק כשצריך את התערבותכם.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="closing">
+    <div class="container">
+      <div class="teal-line" style="margin: 0 auto 20px;"></div>
+      <h2>הופכים שיחה להכנסה</h2>
+      <p>
+        המטרה שלנו היא אחת: להבטיח שכל פנייה לעסק שלכם תטופל ברמה הגבוהה ביותר,
+        עם חוויית שירות אישית ואינטליגנטית שגורמת ללקוח להרגיש שהוא בידיים טובות.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>רוצים לראות את הטכנולוגיה בפעולה?</h2>
+      <p>
+        הכנו לכם בוט הדגמה בוואטסאפ. בואו להתרשם איך נראית שיחה עם AI חכם,
+        להבין את המהירות ואת רמת ההבנה שלו, ולדמיין איך זה יכול לעבוד עבור העסק שלכם.
+      </p>
+      <a
+        href="https://api.whatsapp.com/send/?phone=972534581794&text=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%AA%D7%A0%D7%A1%D7%95%D7%AA%20%D7%91%D7%A6%27%D7%90%D7%98%D7%91%D7%95%D7%98%20%D7%94%D7%9E%D7%A9%D7%9E%D7%A9%20%D7%9B%D7%A1%D7%95%D7%9B%D7%9F%20%D7%9E%D7%9B%D7%99%D7%A8%D7%95%D7%AA%20%D7%97%D7%9B%D7%9D&type=phone_number&app_absent=0"
+        class="cta-btn"
+        target="_blank"
+        rel="noopener"
+      >
+        <svg viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+        </svg>
+        אני רוצה להתנסות בצ'אטבוט המשמש כסוכן מכירות חכם
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 חכמת האוטומציה | <a href="mailto:ariel@autowise-ai.com">ariel@autowise-ai.com</a> | <a href="index.html">חזרה לאתר הראשי</a></p>
+  </footer>
+
+</body>
+</html>

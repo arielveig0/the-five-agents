@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>סימולטורים מבוססי מחקרים | חכמת האוטומציה</title>
+  <meta name="description" content="סימולטורים עסקיים מבוססי מחקרים אקדמיים - גלו כמה אתם מפסידים וכמה אוטומציה יכולה לחסוך לעסק שלכם.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Heebo:wght@700;900&family=Lexend:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --teal:       #5BC0D3;
+      --teal-text:  #1B7A8C;
+      --navy:       #252e62;
+      --navy-mid:   #404675;
+      --light:      #F3F3F3;
+      --black:      #03050c;
+      --white:      #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      direction: rtl;
+      font-family: 'Assistant', sans-serif;
+      font-size: 18px;
+      color: var(--black);
+      background: var(--light);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ══════ NAVBAR ══════ */
+    #navbar {
+      position: fixed;
+      top: 0; right: 0; left: 0;
+      z-index: 999;
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 1px 24px rgba(37,46,98,0.10);
+      border-bottom: 1px solid rgba(91,192,211,0.18);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+      transition: height 0.3s ease;
+    }
+    .nav-group {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-logo img {
+      height: 60px;
+      width: auto;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(37,46,98,0.75);
+      font-size: 0.97rem;
+      font-weight: 600;
+      transition: color 0.2s;
+      position: relative;
+      padding-bottom: 4px;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0; left: 0;
+      height: 2px;
+      background: var(--teal);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.22s ease;
+    }
+    .nav-links a:hover { color: var(--navy); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-cta {
+      background: var(--teal) !important;
+      color: var(--white) !important;
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-size: 0.9rem !important;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+    .nav-cta::after { display: none !important; }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: var(--navy);
+      border-radius: 2px;
+      transition: all 0.28s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background: var(--navy-mid);
+      padding: 8px 24px 24px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: rgba(255,255,255,0.82);
+      padding: 13px 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .mobile-menu a:last-child {
+      border-bottom: none;
+      margin-top: 8px;
+      color: var(--teal);
+    }
+
+    /* ══════ PAGE HERO ══════ */
+    .page-hero {
+      padding: 140px 0 60px;
+      text-align: center;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      color: var(--white);
+    }
+    .page-hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 16px;
+    }
+    .page-hero p {
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .page-hero .teal-line {
+      display: inline-block;
+      width: 48px;
+      height: 4px;
+      background: var(--teal);
+      border-radius: 2px;
+      margin-bottom: 18px;
+    }
+
+    /* ══════ SIMULATOR SECTIONS ══════ */
+    .sim-section {
+      padding: 80px 0;
+    }
+    .sim-section:nth-child(even) {
+      background: var(--white);
+    }
+    .sim-section:nth-child(odd) {
+      background: var(--light);
+    }
+
+    .sim-card {
+      background: var(--white);
+      border-radius: 20px;
+      border-top: 4px solid var(--teal);
+      padding: 48px 48px 52px;
+      max-width: 900px;
+      margin: 0 auto;
+      color: var(--navy);
+      box-shadow: 0 4px 24px rgba(37,46,98,0.10);
+      position: relative;
+      overflow: hidden;
+    }
+    .sim-card::before,
+    .sim-card::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      border: 1.5px solid rgba(91,192,211,0.18);
+      pointer-events: none;
+    }
+    .sim-card::before { width: 260px; height: 260px; top: -100px; left: -80px; }
+    .sim-card::after  { width: 180px; height: 180px; bottom: -60px; right: -50px; }
+
+    .sim-card-title {
+      font-size: 1.6rem;
+      color: var(--navy);
+      text-align: center;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+    .sim-card-subtitle {
+      text-align: center;
+      color: var(--navy-mid);
+      font-size: 1rem;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .sim-card-research {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--teal-text);
+      background: rgba(91,192,211,0.08);
+      padding: 6px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 28px;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+    }
+    .sim-card-research-wrap {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ══════ FORM INPUTS ══════ */
+    .sim-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .sim-form.three-cols {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    .sim-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sim-field label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .sim-field input[type="number"],
+    .sim-field input[type="text"] {
+      padding: 12px 16px;
+      border: 2px solid rgba(37,46,98,0.12);
+      border-radius: 12px;
+      font-family: 'Assistant', sans-serif;
+      font-size: 1rem;
+      color: var(--navy);
+      background: var(--light);
+      transition: border-color 0.2s;
+      width: 100%;
+      text-align: center;
+    }
+    .sim-field input:focus {
+      outline: none;
+      border-color: var(--teal);
+    }
+
+    /* ══════ CALCULATE BUTTON ══════ */
+    .sim-calc-btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 50px;
+      background: var(--teal);
+      color: var(--white);
+      font-family: 'Assistant', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .sim-calc-btn:hover {
+      background: var(--navy);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(37,46,98,0.18);
+    }
+
+    /* ══════ RESULT ══════ */
+    .sim-result {
+      margin-top: 32px;
+      padding: 28px;
+      background: linear-gradient(135deg, rgba(37,46,98,0.04), rgba(91,192,211,0.08));
+      border-radius: 16px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.4s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .sim-result.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .sim-result-label {
+      font-size: 0.9rem;
+      color: var(--navy-mid);
+      margin-bottom: 8px;
+    }
+    .sim-result-value {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      font-size: 2.4rem;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .sim-result-value .amount {
+      color: #ef4444;
+    }
+    .sim-result-value .amount-green {
+      color: #22c55e;
+    }
+    .sim-result-detail {
+      font-size: 0.92rem;
+      color: var(--navy-mid);
+      line-height: 1.6;
+    }
+
+    /* ══════ CTA ══════ */
+    .sim-result-cta {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 14px 34px;
+      border-radius: 50px;
+      background: var(--teal);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1rem;
+      transition: all 0.25s ease;
+    }
+    .sim-result-cta:hover {
+      background: var(--navy);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(37,46,98,0.15);
+    }
+
+    /* ══════ SIMULATOR: LEAD WARMING ══════ */
+    .warm-toggle-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+      border-radius: 50px;
+      overflow: hidden;
+      border: 2px solid rgba(37,46,98,0.12);
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .warm-toggle-btn {
+      flex: 1;
+      padding: 14px 16px;
+      border: none;
+      background: var(--light);
+      font-family: 'Assistant', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--navy-mid);
+      cursor: pointer;
+      transition: all 0.35s ease;
+      position: relative;
+    }
+    .warm-toggle-btn.active-cold {
+      background: #e8edf5;
+      color: #4a6fa5;
+      box-shadow: inset 0 0 0 2px #4a6fa5;
+    }
+    .warm-toggle-btn.active-warm {
+      background: #fff3e6;
+      color: #e65c00;
+      box-shadow: inset 0 0 0 2px #e65c00;
+    }
+
+    .warm-result-area {
+      margin-top: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .warm-main-result {
+      padding: 32px 24px;
+      border-radius: 16px;
+      text-align: center;
+      transition: all 0.4s ease;
+    }
+    .warm-main-result.cold-mode {
+      background: linear-gradient(135deg, rgba(74,111,165,0.06), rgba(74,111,165,0.12));
+    }
+    .warm-main-result.warm-mode {
+      background: linear-gradient(135deg, rgba(230,92,0,0.05), rgba(255,152,56,0.12));
+    }
+    .warm-main-label {
+      font-size: 1rem;
+      color: var(--navy-mid);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .warm-big-number {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      font-size: 3rem;
+      display: inline-block;
+      transition: transform 0.2s ease, color 0.4s ease;
+      min-width: 50px;
+    }
+    .warm-big-number.pop { transform: scale(1.12); }
+    .warm-big-number.cold-color { color: #4a6fa5; }
+    .warm-big-number.warm-color { color: #e65c00; }
+    .warm-big-suffix {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      font-size: 1.4rem;
+      color: var(--navy);
+    }
+
+    .warm-comparison {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--navy-mid);
+      line-height: 1.8;
+    }
+    .warm-comparison strong { font-weight: 800; }
+    .warm-diff {
+      margin-top: 12px;
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      font-size: 1.15rem;
+      color: #e65c00;
+    }
+
+    .warm-edu {
+      margin-top: 28px;
+      padding: 24px;
+      background: var(--white);
+      border-right: 4px solid var(--teal);
+      border-radius: 0 12px 12px 0;
+      text-align: right;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.5s ease;
+    }
+    .warm-edu.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .warm-edu-hook {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--navy);
+      margin-bottom: 14px;
+    }
+    .warm-edu-body {
+      font-size: 0.92rem;
+      color: var(--navy-mid);
+      line-height: 1.85;
+      margin-bottom: 14px;
+    }
+    .warm-edu-closer {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--teal-text);
+    }
+    .warm-cta-wrap {
+      text-align: center;
+      margin-top: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ══════ SIMULATOR: AFTER-HOURS LEADS ══════ */
+    .afterhours-result {
+      margin-top: 28px;
+      padding: 32px 24px;
+      background: linear-gradient(135deg, rgba(37,46,98,0.03), rgba(91,192,211,0.10));
+      border-radius: 16px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+    .afterhours-stat {
+      margin-bottom: 16px;
+    }
+    .afterhours-stat-number {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      font-size: 2.4rem;
+      color: #ef4444;
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+    .afterhours-stat-number.pop {
+      transform: scale(1.12);
+    }
+    .afterhours-stat-label {
+      font-size: 1rem;
+      color: var(--navy);
+      font-weight: 700;
+    }
+    .afterhours-competitor {
+      font-size: 1.05rem;
+      color: var(--navy-mid);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .afterhours-competitor strong {
+      color: #ef4444;
+      font-weight: 900;
+    }
+    .afterhours-insight {
+      margin-top: 24px;
+      padding: 20px 24px;
+      background: var(--white);
+      border-right: 4px solid var(--teal);
+      border-radius: 0 12px 12px 0;
+      text-align: right;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.5s ease;
+    }
+    .afterhours-insight.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .afterhours-insight p {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--navy);
+    }
+    .afterhours-cta-wrap {
+      text-align: center;
+      margin-top: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ══════ SIMULATOR 4: CALLS ══════ */
+    .calls-helper {
+      font-size: 0.75rem;
+      color: var(--navy-mid);
+      line-height: 1.5;
+      margin-top: 2px;
+    }
+
+    .calls-result {
+      margin-top: 28px;
+      padding: 32px 24px;
+      background: linear-gradient(135deg, rgba(37,46,98,0.03), rgba(91,192,211,0.10));
+      border-radius: 16px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+    .calls-result-main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .calls-emoji {
+      font-size: 1.8rem;
+    }
+    .calls-result-text {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      color: var(--navy);
+    }
+    .calls-hours {
+      font-size: 2.6rem;
+      color: var(--teal);
+      display: inline-block;
+      min-width: 40px;
+      transition: transform 0.2s ease;
+    }
+    .calls-hours.pop {
+      transform: scale(1.15);
+    }
+    .calls-result-sub {
+      font-size: 1.05rem;
+      color: var(--navy-mid);
+      font-weight: 600;
+    }
+
+    .calls-persuasion {
+      margin-top: 28px;
+      padding: 24px;
+      background: var(--white);
+      border-right: 4px solid var(--teal);
+      border-radius: 0 12px 12px 0;
+      text-align: right;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.5s ease;
+    }
+    .calls-persuasion.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .calls-persuasion-hook {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      font-size: 1.15rem;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+    .calls-persuasion-body {
+      font-size: 0.95rem;
+      color: var(--navy-mid);
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+    .calls-persuasion-closer {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--teal-text);
+    }
+
+    .calls-cta-wrap {
+      text-align: center;
+      margin-top: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .calls-cta {
+      font-size: 1.1rem;
+      padding: 16px 40px;
+    }
+
+
+    /* ══════ BACK LINK ══════ */
+    .back-link-section {
+      text-align: center;
+      padding: 48px 0 60px;
+      background: var(--light);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--teal-text);
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: var(--navy);
+    }
+
+    /* ══════ FOOTER ══════ */
+    footer {
+      background: var(--navy);
+      padding: 28px 0;
+      text-align: center;
+    }
+    footer p {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.88rem;
+    }
+    footer a {
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    footer a:hover { opacity: 0.75; }
+
+    /* ══════ RESPONSIVE ══════ */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-inner { height: 60px; position: relative; justify-content: center; }
+      .nav-group { position: absolute; right: 50%; transform: translateX(50%); }
+      .hamburger { position: absolute; right: 0; }
+      .nav-logo img { height: 50px; }
+
+      .page-hero { padding: 110px 0 44px; }
+      .page-hero h1 { font-size: 1.6rem; }
+
+      .sim-section { padding: 48px 0; }
+      .sim-card { padding: 28px 18px 32px; }
+      .sim-card-title { font-size: 1.25rem; }
+
+      .sim-form,
+      .sim-form.three-cols {
+        grid-template-columns: 1fr;
+      }
+
+      .sim-result-value { font-size: 1.8rem; }
+
+      .warm-big-number { font-size: 2.2rem; }
+      .warm-toggle-btn { font-size: 0.88rem; padding: 12px 10px; }
+      .warm-diff { font-size: 1rem; }
+
+      .afterhours-stat-number { font-size: 1.8rem; }
+
+      .calls-result-text { font-size: 1.25rem; }
+      .calls-hours { font-size: 2rem; }
+      .calls-cta { font-size: 1rem; padding: 14px 28px; }
+    }
+
+    /* ══════════════════════════════════════
+       LEAD TEMPERATURE SIMULATOR
+    ══════════════════════════════════════ */
+    #sim-lead-temp {
+      background: var(--light);
+      padding: 80px 0;
+    }
+    #sim-lead-temp .sim-card {
+      border-top: 4px solid var(--teal);
+    }
+    .sim-slider-section { margin-bottom: 36px; position: relative; z-index: 1; }
+    .sim-slider-top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .sim-slider-question {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--navy);
+      text-align: center;
+      width: 100%;
+    }
+    .sim-time-badge {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      font-size: 1.65rem;
+      color: #FF3D00;
+      background: rgba(255,61,0,0.07);
+      border: 2px solid currentColor;
+      padding: 6px 22px;
+      border-radius: 30px;
+      min-width: 110px;
+      text-align: center;
+      transition: color 0.3s, background 0.3s, box-shadow 0.3s;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 4px rgba(255,61,0,0.10);
+      letter-spacing: -0.5px;
+    }
+    .sim-inputs-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 36px;
+      position: relative;
+      z-index: 1;
+    }
+    .sim-input-group label {
+      display: block;
+      font-size: 1rem;
+      color: #111;
+      margin-bottom: 8px;
+      font-weight: 800;
+      text-align: center;
+    }
+    .sim-number-input {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--white);
+      border: 1.5px solid var(--teal);
+      border-radius: 12px;
+      color: var(--navy);
+      font-family: 'Heebo', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -moz-appearance: textfield;
+    }
+    .sim-number-input::-webkit-outer-spin-button,
+    .sim-number-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .sim-number-input:focus {
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(37,46,98,0.08);
+    }
+    #sim-slider {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 10px;
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+      background: var(--navy);
+    }
+    #sim-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 0 3px rgba(91,192,211,0.25), 0 2px 8px rgba(37,46,98,0.25);
+      cursor: pointer;
+    }
+    #sim-slider::-moz-range-thumb {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--teal);
+      border: none;
+      cursor: pointer;
+    }
+    .sim-tick-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+    .sim-tick-labels span {
+      font-size: 0.72rem;
+      color: #000;
+      font-weight: 700;
+    }
+    .sim-visuals {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .sim-chart-box {
+      background: var(--white);
+      border: 1px solid rgba(91,192,211,0.30);
+      border-radius: 16px;
+      padding: 4px;
+      overflow: hidden;
+    }
+    .sim-chart-box svg { display: block; width: 100%; height: auto; }
+    .sim-chart-title {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: rgba(37,46,98,0.72);
+      text-align: center;
+      padding: 10px 4px 2px;
+      letter-spacing: 0.02em;
+    }
+    .sim-chart-desc {
+      font-family: 'Assistant', sans-serif;
+      font-size: 0.78rem;
+      color: rgba(37,46,98,0.48);
+      text-align: center;
+      padding: 2px 4px 8px;
+      font-style: italic;
+    }
+    .sim-emoji-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0 6px;
+    }
+    .sim-emoji {
+      font-size: 2.2rem;
+      line-height: 1;
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+    .sim-emoji-label {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--navy);
+      transition: color 0.3s;
+    }
+    @keyframes sim-shake {
+      0%,100% { transform: translateX(0) rotate(0deg); }
+      12%  { transform: translateX(-7px) rotate(-10deg); }
+      25%  { transform: translateX(7px)  rotate(10deg); }
+      37%  { transform: translateX(-5px) rotate(-7deg); }
+      50%  { transform: translateX(5px)  rotate(7deg); }
+      62%  { transform: translateX(-3px) rotate(-4deg); }
+      75%  { transform: translateX(3px)  rotate(4deg); }
+      87%  { transform: translateX(-1px) rotate(-1deg); }
+    }
+    .sim-emoji.is-shaking {
+      animation: sim-shake 0.55s cubic-bezier(0.36,0.07,0.19,0.97) both;
+    }
+    /* Ouch box */
+    .sim-ouch-box {
+      background: linear-gradient(135deg, #1a2050 0%, #202860 100%);
+      border: 1px solid rgba(91,192,211,0.15);
+      border-radius: 18px;
+      padding: 28px 32px;
+      text-align: center;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+      transition: box-shadow 0.4s ease;
+    }
+    @keyframes sim-ouch-pulse {
+      0%   { box-shadow: 0 4px 24px rgba(0,0,0,0.25); }
+      35%  { box-shadow: 0 0 0 10px rgba(220,38,38,0.15), 0 4px 24px rgba(0,0,0,0.25); }
+      100% { box-shadow: 0 4px 24px rgba(0,0,0,0.25); }
+    }
+    .sim-ouch-box.pulsing { animation: sim-ouch-pulse 0.65s ease-out; }
+    .sim-pain-line {
+      font-size: 0.93rem;
+      font-weight: 700;
+      color: rgba(248,113,113,0.82);
+      margin-bottom: 16px;
+      letter-spacing: 0.01em;
+    }
+    .sim-ouch-label {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.50);
+      margin-bottom: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .sim-loss-amount {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      font-size: 4rem;
+      color: #f87171;
+      line-height: 1;
+      margin-bottom: 0;
+      text-shadow: 0 2px 20px rgba(248,113,113,0.35);
+    }
+    .sim-ouch-sub {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.48);
+      margin-top: 14px;
+    }
+    .sim-ouch-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .sim-stat-col { text-align: center; padding: 0 28px; }
+    .sim-stat-divider {
+      width: 1px; height: 64px;
+      background: rgba(255,255,255,0.14);
+      flex-shrink: 0;
+    }
+    .sim-conv-rate {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      font-size: 3rem;
+      color: #f87171;
+      line-height: 1;
+      transition: color 0.4s;
+    }
+    /* Zone states */
+    #sim-lead-temp .sim-card { transition: border-top-color 0.5s ease, box-shadow 0.5s ease; }
+    #sim-lead-temp .sim-card.zone-gold { border-top-color: #22c55e; box-shadow: 0 4px 28px rgba(34,197,94,0.14); }
+    #sim-lead-temp .sim-card.zone-warm { border-top-color: #f59e0b; box-shadow: 0 4px 28px rgba(245,158,11,0.12); }
+    #sim-lead-temp .sim-card.zone-cold { border-top-color: #ef4444; box-shadow: 0 4px 28px rgba(239,68,68,0.14); }
+    /* Bridge + CTA */
+    .sim-sol-bridge {
+      text-align: center;
+      color: rgba(37,46,98,0.72);
+      font-size: 0.97rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+    .sim-sol-bridge .sim-highlight { color: var(--teal); font-weight: 700; }
+    .sim-cta-headline {
+      text-align: center;
+      font-size: 1.32rem;
+      font-weight: 900;
+      color: var(--navy);
+      margin-bottom: 20px;
+      line-height: 1.28;
+      position: relative;
+      z-index: 1;
+    }
+    .sim-final-line {
+      text-align: center;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: rgba(37,46,98,0.52);
+      margin-top: 16px;
+      line-height: 1.6;
+      letter-spacing: 0.01em;
+      position: relative;
+      z-index: 1;
+    }
+    @keyframes sim-cta-pulse {
+      0%, 100% { box-shadow: 0 4px 22px rgba(37,211,102,0.28); }
+      50%       { box-shadow: 0 4px 36px rgba(37,211,102,0.55), 0 0 0 5px rgba(37,211,102,0.12); }
+    }
+    .sim-cta-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 18px 36px;
+      background: linear-gradient(135deg, #25D366 0%, #1aaf52 100%);
+      color: white;
+      border-radius: 50px;
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900;
+      font-size: 1.12rem;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.25s;
+      box-shadow: 0 4px 22px rgba(37,211,102,0.28);
+      animation: sim-cta-pulse 2.8s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
+    }
+    .sim-cta-link:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 48px rgba(37,211,102,0.6);
+      animation: none;
+    }
+    @keyframes sim-count-flash {
+      0%   { transform: scale(0.92); opacity: 0.5; }
+      55%  { transform: scale(1.07); opacity: 1; }
+      100% { transform: scale(1);    opacity: 1; }
+    }
+    .sim-loss-amount.counting {
+      animation: sim-count-flash 0.32s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    #sim-tooltip-bg { transition: fill 0.25s ease; }
+    #sim-marker-dot { transition: stroke 0.25s ease; }
+    .sim-time-badge  { transition: color 0.25s ease, background 0.25s ease; }
+
+    @media (max-width: 640px) {
+      .sim-inputs-row { grid-template-columns: 1fr; gap: 16px; }
+      .sim-loss-amount, .sim-conv-rate { font-size: 1.9rem !important; }
+      .sim-ouch-stats { gap: 0; }
+      .sim-ouch-box { padding: 20px 16px; }
+      .sim-chart-box svg { min-height: 200px; height: 200px; width: auto; max-width: 100%; }
+      .sim-stat-col { padding: 0 14px; }
+      .sim-stat-divider { height: 50px; }
+      #sim-slider { height: 8px; }
+      #sim-slider::-webkit-slider-thumb {
+        width: 44px !important;
+        height: 44px !important;
+      }
+      #sim-slider::-moz-range-thumb {
+        width: 44px !important;
+        height: 44px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════ NAVBAR ══════ -->
+<nav id="navbar">
+  <div class="container nav-inner">
+    <div class="nav-group">
+      <a href="index.html" class="nav-logo">
+        <img src="logo-03.png" alt="חכמת האוטומציה" onerror="this.style.display='none'">
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">דף הבית</a></li>
+        <li><a href="index.html#services">שירותים</a></li>
+        <li><a href="index.html#portfolio">פרויקטים</a></li>
+        <li><a href="index.html#simulator">סימולטור טמפרטורה</a></li>
+        <li><a href="index.html#contact" class="nav-cta">דברו איתנו</a></li>
+      </ul>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="פתח תפריט">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="תפריט נייד">
+    <a href="index.html" onclick="closeMenu()">דף הבית</a>
+    <a href="index.html#services" onclick="closeMenu()">שירותים</a>
+    <a href="index.html#portfolio" onclick="closeMenu()">פרויקטים</a>
+    <a href="index.html#simulator" onclick="closeMenu()">סימולטור טמפרטורה</a>
+    <a href="index.html#contact" onclick="closeMenu()">דברו איתנו</a>
+  </nav>
+</nav>
+
+<!-- ══════ PAGE HERO ══════ -->
+<section class="page-hero">
+  <div class="container">
+    <span class="teal-line"></span>
+    <h1>סימולטורים מבוססי מחקרים</h1>
+    <p>גלו כמה העסק שלכם מפסיד — ואיך אוטומציה יכולה לשנות את זה</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     סימולטור: טמפרטורת לידים
+══════════════════════════════════════ -->
+<section class="sim-section" id="sim-lead-temp">
+  <div class="container">
+    <div class="sim-card">
+
+      <h2 class="sim-card-title">סימולטור טמפרטורת לידים</h2>
+      <p class="sim-card-subtitle">כמה כסף העסק שלך מפסיד בגלל מענה איטי ללידים?</p>
+      <div class="sim-card-research-wrap">
+        <span class="sim-card-research">(מבוסס מחקרים)</span>
+      </div>
+
+      <!-- Inputs -->
+      <div class="sim-inputs-row">
+        <div class="sim-input-group">
+          <label for="sim-lead-value">💰 שווי ליד ממוצע (₪)</label>
+          <input type="number" id="sim-lead-value" class="sim-number-input" value="300" min="0" oninput="simUpdate()">
+        </div>
+        <div class="sim-input-group">
+          <label for="sim-leads-month">📊 לידים ביום</label>
+          <input type="number" id="sim-leads-month" class="sim-number-input" value="3" min="0" oninput="simUpdate()">
+        </div>
+      </div>
+
+      <!-- Slider -->
+      <div class="sim-slider-section">
+        <div class="sim-slider-top">
+          <span class="sim-slider-question">תוך כמה זמן אתם חוזרים ללידים?</span>
+          <span class="sim-time-badge" id="sim-time-label">30 דק׳</span>
+        </div>
+        <input type="range" id="sim-slider" min="0" max="100" value="20" style="direction:ltr" oninput="window.simTouch()" aria-label="זמן מענה לליד" aria-describedby="sim-time-label">
+        <div class="sim-emoji-row">
+          <span class="sim-emoji" id="sim-emoji">😬</span>
+          <span class="sim-emoji-label" id="sim-emoji-label">הליד מתקרר...</span>
+        </div>
+        <div class="sim-tick-labels" style="direction:ltr">
+          <span>0 דק׳</span>
+          <span>30 דק׳</span>
+          <span>שעה</span>
+          <span>4 שעות</span>
+          <span>12 שעות</span>
+          <span>24 שעות</span>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="sim-visuals">
+        <div class="sim-chart-box">
+          <div class="sim-chart-title">כמה מהלידים נשארים איתכם - לפי זמן תגובה</div>
+          <div class="sim-chart-desc">ככל שעובר יותר זמן עד למענה - ככה יותר לקוחות נעלמים</div>
+          <svg id="sim-chart" viewBox="0 0 500 222" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="sim-area-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ef4444" stop-opacity="0.28"/>
+                <stop offset="100%" stop-color="#ef4444" stop-opacity="0.04"/>
+              </linearGradient>
+            </defs>
+            <rect x="50"  y="20" width="96"  height="182" fill="rgba(34,197,94,0.09)"/>
+            <rect x="146" y="20" width="107" height="182" fill="rgba(255,165,0,0.07)"/>
+            <rect x="253" y="20" width="232" height="182" fill="rgba(239,68,68,0.06)"/>
+            <line x1="50" y1="20" x2="485" y2="20" stroke="rgba(37,46,98,0.15)" stroke-width="1"/>
+            <text x="44" y="24" text-anchor="end" fill="rgba(37,46,98,0.60)" font-size="10" font-family="Assistant,sans-serif">100%</text>
+            <line x1="50" y1="65" x2="485" y2="65" stroke="rgba(37,46,98,0.15)" stroke-width="1"/>
+            <text x="44" y="69" text-anchor="end" fill="rgba(37,46,98,0.60)" font-size="10" font-family="Assistant,sans-serif">75%</text>
+            <line x1="50" y1="111" x2="485" y2="111" stroke="rgba(37,46,98,0.15)" stroke-width="1"/>
+            <text x="44" y="115" text-anchor="end" fill="rgba(37,46,98,0.60)" font-size="10" font-family="Assistant,sans-serif">50%</text>
+            <line x1="50" y1="157" x2="485" y2="157" stroke="rgba(37,46,98,0.15)" stroke-width="1"/>
+            <text x="44" y="161" text-anchor="end" fill="rgba(37,46,98,0.60)" font-size="10" font-family="Assistant,sans-serif">25%</text>
+            <line x1="50" y1="202" x2="485" y2="202" stroke="rgba(37,46,98,0.25)" stroke-width="1"/>
+            <text x="44" y="206" text-anchor="end" fill="rgba(37,46,98,0.60)" font-size="10" font-family="Assistant,sans-serif">0%</text>
+            <line x1="146" y1="20" x2="146" y2="202" stroke="rgba(37,46,98,0.12)" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="253" y1="20" x2="253" y2="202" stroke="rgba(37,46,98,0.12)" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="378" y1="20" x2="378" y2="202" stroke="rgba(37,46,98,0.12)" stroke-width="1" stroke-dasharray="3,3"/>
+            <text x="50"  y="216" text-anchor="middle" fill="rgba(37,46,98,0.50)" font-size="9" font-family="Assistant,sans-serif">0 דק׳</text>
+            <text x="146" y="216" text-anchor="middle" fill="rgba(37,46,98,0.65)" font-size="9" font-family="Assistant,sans-serif">5 דק׳</text>
+            <text x="253" y="216" text-anchor="middle" fill="rgba(37,46,98,0.65)" font-size="9" font-family="Assistant,sans-serif">30 דק׳</text>
+            <text x="378" y="216" text-anchor="middle" fill="rgba(37,46,98,0.65)" font-size="9" font-family="Assistant,sans-serif">4 ש׳</text>
+            <text x="485" y="216" text-anchor="middle" fill="rgba(37,46,98,0.65)" font-size="9" font-family="Assistant,sans-serif">24 ש׳</text>
+            <rect x="52" y="6" width="86" height="14" rx="3" fill="rgba(37,46,98,0.12)"/>
+            <text x="95" y="16" text-anchor="middle" fill="#252e62" font-size="8.5" font-family="Assistant,sans-serif" font-weight="700">✨ חלון הזהב</text>
+            <path d="M50,20 L146,20 C189,20 210,93 253,93 C303,93 328,147 378,147 C421,147 442,184 485,184 L485,202 L50,202 Z" fill="url(#sim-area-grad)"/>
+            <path d="M50,20 L146,20 C189,20 210,93 253,93 C303,93 328,147 378,147 C421,147 442,184 485,184" fill="none" stroke="#252e62" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <line id="sim-marker-line" x1="253" y1="20" x2="253" y2="202" stroke="rgba(37,46,98,0.55)" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <circle id="sim-marker-dot" cx="253" cy="93" r="6" fill="white" stroke="#FF8C00" stroke-width="2.5"/>
+            <rect id="sim-tooltip-bg" x="261" y="68" width="88" height="34" rx="6" fill="#FF8C00"/>
+            <text id="sim-tooltip-text" x="305" y="91" text-anchor="middle" fill="white" font-size="20" font-family="Heebo,sans-serif" font-weight="700">60%</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Ouch box -->
+      <div class="sim-ouch-box" id="sim-ouch-box">
+        <p class="sim-pain-line">זה כסף שכבר יכול היה להיות אצלכם</p>
+        <div class="sim-ouch-stats">
+          <div class="sim-stat-col">
+            <div class="sim-ouch-label">הפסד חודשי משוער:</div>
+            <div class="sim-loss-amount" id="sim-loss-amount" data-current="20000">₪20,000</div>
+          </div>
+          <div class="sim-stat-divider"></div>
+          <div class="sim-stat-col">
+            <div class="sim-ouch-label">שיעור המרה בפועל:</div>
+            <div class="sim-conv-rate" id="sim-conv-rate">60%</div>
+          </div>
+        </div>
+        <div class="sim-ouch-sub" id="sim-ouch-sub">זו הערכה - אבל היא מראה לך סדר גודל אמיתי של מה שקורה היום</div>
+      </div>
+
+      <!-- Bridge to solution -->
+      <div class="sim-sol-bridge">האוטומציה שלנו יכולה להחזיר את זה<br>לעסק שלכם -<br><span class="sim-highlight">על ידי מענה מיידי ללידים</span></div>
+
+      <!-- CTA headline -->
+      <div class="sim-cta-headline">רוצים להפסיק להפסיד את הסכום הזה?</div>
+
+      <!-- CTA -->
+      <a href="https://wa.me/972546242468?text=%D7%94%D7%99%D7%99%20%D7%90%D7%A8%D7%99%D7%90%D7%9C%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%94%D7%A1%D7%99%D7%9E%D7%95%D7%9C%D7%98%D7%95%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%99%D7%95%D7%AA%D7%A8"
+         target="_blank" rel="noopener" class="sim-cta-link">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        <span id="sim-cta-text">דברו איתנו בוואטסאפ</span>
+      </a>
+
+      <!-- Trust line -->
+      <p class="sim-final-line">ללא התחייבות · שיחה קצרה · מתחילים בקטן</p>
+
+      <div style="text-align:center; margin-top:24px; position:relative; z-index:1;">
+        <p style="font-size:0.95rem; font-weight:800; color:var(--navy); margin-bottom:10px;">
+          📚 הסימולטור מבוסס על מחקרים אקדמיים:
+        </p>
+        <div style="display:inline-flex; flex-wrap:wrap; justify-content:center; gap:8px;">
+          <a href="https://www.leadresponsemanagement.org/lrm_study/" target="_blank" rel="noopener"
+             style="display:inline-block; padding:6px 16px; border-radius:50px; background:rgba(91,192,211,0.15); color:var(--teal-text); font-size:0.85rem; font-weight:700; border:1.5px solid rgba(91,192,211,0.35); transition:all 0.2s;">
+            MIT &amp; InsideSales
+          </a>
+          <a href="https://hbr.org/2011/03/the-short-life-of-online-sales-leads" target="_blank" rel="noopener"
+             style="display:inline-block; padding:6px 16px; border-radius:50px; background:rgba(91,192,211,0.15); color:var(--teal-text); font-size:0.85rem; font-weight:700; border:1.5px solid rgba(91,192,211,0.35); transition:all 0.2s;">
+            Harvard Business Review
+          </a>
+          <a href="https://optif.ai/learn/questions/lead-response-time-benchmark/" target="_blank" rel="noopener"
+             style="display:inline-block; padding:6px 16px; border-radius:50px; background:rgba(91,192,211,0.15); color:var(--teal-text); font-size:0.85rem; font-weight:700; border:1.5px solid rgba(91,192,211,0.35); transition:all 0.2s;">
+            optif.ai (N=939)
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     סימולטור: חימום לידים (before vs after)
+══════════════════════════════════════ -->
+<section class="sim-section" id="sim-warming">
+  <div class="container">
+    <div class="sim-card">
+      <h2 class="sim-card-title">סימולטור חימום לידים</h2>
+      <p class="sim-card-subtitle">מה ההבדל בין ליד קר לליד מחומם?</p>
+
+      <div class="sim-form">
+        <div class="sim-field">
+          <label for="warm-leads">כמות לידים בחודש</label>
+          <input type="number" id="warm-leads" placeholder="לדוגמה: 100" min="0" max="100000" oninput="calcWarming()">
+        </div>
+        <div class="sim-field">
+          <label for="warm-close">אחוז סגירה נוכחי (%)</label>
+          <input type="number" id="warm-close" placeholder="לדוגמה: 20" min="0" max="100" oninput="calcWarming()">
+        </div>
+      </div>
+
+      <!-- Toggle -->
+      <div class="warm-toggle-wrap">
+        <button class="warm-toggle-btn active-cold" id="warm-btn-cold" onclick="setWarmMode('cold')">❄️ ליד קר (בלי חימום)</button>
+        <button class="warm-toggle-btn" id="warm-btn-warm" onclick="setWarmMode('warm')">🔥 ליד מחומם (עם צ'אטבוט)</button>
+      </div>
+
+      <!-- Result -->
+      <div class="warm-result-area">
+        <div class="warm-main-result cold-mode" id="warm-result-box">
+          <p class="warm-main-label">📊 כמות לקוחות בפועל</p>
+          <span class="warm-big-number cold-color" id="warm-big-num">0</span>
+          <span class="warm-big-suffix"> לקוחות</span>
+        </div>
+
+        <div class="warm-comparison" id="warm-comparison">
+          עם חימום: <strong><span id="warm-val-warm">0</span> לקוחות</strong><br>
+          בלי חימום: <strong><span id="warm-val-cold">0</span> לקוחות</strong>
+        </div>
+        <div class="warm-diff" id="warm-diff"></div>
+      </div>
+
+      <!-- Educational text -->
+      <div class="warm-edu" id="warm-edu">
+        <p class="warm-edu-hook">רגע… זה לא עניין של מזל.</p>
+        <p class="warm-edu-body">
+          ליד קר מגיע לשיחה כשהוא:<br>
+          לא בטוח מה אתה עושה<br>
+          לא מבין אם זה מתאים לו<br>
+          ומלא בהתנגדויות<br><br>
+          ליד מחומם מגיע כבר אחרי:<br>
+          הבנה של הערך<br>
+          סינון ראשוני<br>
+          ותיאום ציפיות
+        </p>
+        <p class="warm-edu-closer">וזה בדיוק מה שמעלה אחוזי סגירה.</p>
+      </div>
+
+      <!-- CTA -->
+      <div class="warm-cta-wrap">
+        <a href="https://wa.me/972534581794?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A0%D7%A1%D7%95%D7%AA%20%D7%90%D7%AA%20%D7%94%D7%93%D7%9E%D7%95"
+           target="_blank" rel="noopener" class="sim-result-cta">תראה איך זה עובד אצלך בעסק</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     סימולטור: טלפון אינטראקטיבי
+══════════════════════════════════════ -->
+
+
+
+
+<!-- ══════════════════════════════════════
+     סימולטור: לידים מחוץ לשעות עבודה
+══════════════════════════════════════ -->
+<section class="sim-section" id="sim-afterhours">
+  <div class="container">
+    <div class="sim-card">
+      <h2 class="sim-card-title">כמה לידים אתה מקבל מחוץ לשעות עבודה?</h2>
+      <p class="sim-card-subtitle">האמת? רוב הפניות מגיעות כשאתה לא זמין.</p>
+
+      <div class="sim-form">
+        <div class="sim-field">
+          <label for="ah-leads">כמות לידים ביום</label>
+          <input type="number" id="ah-leads" placeholder="לדוגמה: 15" min="0" max="1000" oninput="calcAfterHours()">
+        </div>
+        <div class="sim-field">
+          <label for="ah-hours">שעות פעילות העסק ביום</label>
+          <input type="number" id="ah-hours" placeholder="לדוגמה: 9" min="1" max="24" oninput="calcAfterHours()">
+        </div>
+      </div>
+
+      <!-- Live result -->
+      <div class="afterhours-result" id="ah-result">
+        <div class="afterhours-stat">
+          <div class="afterhours-stat-number" id="ah-missed-val">0</div>
+          <div class="afterhours-stat-label">לידים ביום מגיעים כשאתה לא עונה</div>
+        </div>
+        <p class="afterhours-competitor">מתוכם, <strong><span id="ah-competitor-val">0</span> כנראה הולכים למתחרים</strong></p>
+      </div>
+
+      <!-- Insight -->
+      <div class="afterhours-insight" id="ah-insight">
+        <p>הלקוחות הכי חמים שלך מגיעים דווקא כשאתה לא שם.</p>
+      </div>
+
+      <!-- CTA -->
+      <div class="afterhours-cta-wrap">
+        <a href="https://wa.me/972534581794?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A0%D7%A1%D7%95%D7%AA%20%D7%90%D7%AA%20%D7%94%D7%93%D7%9E%D7%95"
+           target="_blank" rel="noopener" class="sim-result-cta">תראה איך הבוט עונה גם כשאתה לא שם</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     סימולטור 4: חיסכון זמן בשיחות מכירה
+══════════════════════════════════════ -->
+<section class="sim-section" id="sim-calls">
+  <div class="container">
+    <div class="sim-card">
+      <h2 class="sim-card-title">סימולטור חיסכון זמן בשיחות מכירה</h2>
+      <p class="sim-card-subtitle">כמה שעות אתה חוסך בחודש עם צ'אטבוט שמסנן לידים מראש?</p>
+
+      <div class="sim-form">
+        <div class="sim-field">
+          <label for="calls-leads">כמות לידים בחודש</label>
+          <input type="number" id="calls-leads" placeholder="לדוגמה: 120" min="0" max="10000" oninput="calcCalls()">
+        </div>
+        <div class="sim-field">
+          <label for="calls-time">חיסכון זמן ממוצע לשיחה (בדקות)</label>
+          <input type="number" id="calls-time" value="10" min="0" max="60" oninput="calcCalls()">
+          <span class="calls-helper">מבוסס על כך ש־30%–50% משיחת מכירה מוקדשת לשאלות וסינון — תהליך שהצ'אטבוט מבצע מראש</span>
+        </div>
+      </div>
+
+      <!-- Live result (always visible, updates in real time) -->
+      <div class="calls-result" id="calls-result">
+        <div class="calls-result-main">
+          <span class="calls-emoji">⏱️</span>
+          <span class="calls-result-text">חסכת כ־<span class="calls-hours" id="calls-hours-val">0</span> שעות בחודש</span>
+        </div>
+        <div class="calls-result-sub" id="calls-days-val">זה שווה לכ־0 ימי עבודה</div>
+      </div>
+
+      <!-- Static persuasion text -->
+      <div class="calls-persuasion" id="calls-persuasion">
+        <p class="calls-persuasion-hook">רגע… תחשוב על זה רגע.</p>
+        <p class="calls-persuasion-body">
+          זה זמן שאתה מבזבז היום על:<br>
+          שאלות שחוזרות על עצמן<br>
+          לקוחות שלא באמת מתאימים<br>
+          ושיחות שלא נסגרות
+        </p>
+        <p class="calls-persuasion-closer">הצ'אטבוט פשוט חותך את כל זה מראש.</p>
+      </div>
+
+      <!-- CTA -->
+      <div class="calls-cta-wrap">
+        <a href="https://wa.me/972549504040?text=%D7%94%D7%99%D7%99%20%D7%90%D7%A8%D7%99%D7%90%D7%9C%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%A1%D7%99%D7%9E%D7%95%D7%9C%D7%98%D7%95%D7%A8%20%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F%20%D7%94%D7%96%D7%9E%D7%9F%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A2%D7%95%D7%93"
+           target="_blank" rel="noopener" class="sim-result-cta calls-cta">תראה איך זה נראה אצלך בעסק</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     סימולטור 1: ROI אוטומציה
+══════════════════════════════════════ -->
+<section class="sim-section" id="sim-roi">
+  <div class="container">
+    <div class="sim-card">
+      <h2 class="sim-card-title">כמה כסף אתם שורפים על עבודה ידנית?</h2>
+      <p class="sim-card-subtitle">חשבו כמה זמן אתם מבזבזים על דברים שבוט יכול לעשות בשבילכם</p>
+      <div class="sim-card-research-wrap">
+        <span class="sim-card-research">📊 מבוסס על מחקר McKinsey — 60-70% מהמשימות החוזרות ניתנות לאוטומציה</span>
+      </div>
+
+      <div class="sim-form three-cols">
+        <div class="sim-field">
+          <label for="roi-hours">כמה שעות בשבוע אתם מטפלים בלידים ידנית?</label>
+          <input type="number" id="roi-hours" placeholder="לדוגמא: 15" min="0" max="80">
+          <span class="calls-helper">מענה להודעות, חזרה לפניות, תיאום פגישות, שליחת הצעות מחיר, מעקבים ותזכורות</span>
+        </div>
+        <div class="sim-field">
+          <label for="roi-cost">כמה עולה שעת עבודה שלכם? (₪)</label>
+          <input type="number" id="roi-cost" placeholder="לדוגמא: 80" min="0" max="1000">
+          <span class="calls-helper">אם אתם בעל העסק — חשבו כמה שווה שעה שלכם</span>
+        </div>
+        <div class="sim-field">
+          <label for="roi-leads">כמה פניות חדשות מגיעות אליכם ביום?</label>
+          <input type="number" id="roi-leads" placeholder="לדוגמא: 20" min="0" max="500">
+          <span class="calls-helper">הודעות וואטסאפ, טפסים מהאתר, שיחות, הודעות ברשתות</span>
+        </div>
+      </div>
+
+      <button class="sim-calc-btn" onclick="calcROI()">חשבו את החיסכון שלכם</button>
+
+      <div class="sim-result" id="roi-result">
+        <p class="sim-result-label">החיסכון החודשי המוערך שלכם:</p>
+        <div class="sim-result-value"><span class="amount-green" id="roi-amount"></span></div>
+        <p class="sim-result-detail" id="roi-detail"></p>
+        <a href="https://wa.me/972549504040?text=%D7%94%D7%99%D7%99%20%D7%90%D7%A8%D7%99%D7%90%D7%9C%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%A1%D7%99%D7%9E%D7%95%D7%9C%D7%98%D7%95%D7%A8%20%D7%94-ROI%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A2%D7%95%D7%93"
+           target="_blank" rel="noopener" class="sim-result-cta">רוצה לחסוך? דברו איתנו</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════ BACK LINK ══════ -->
+<section class="back-link-section">
+  <a href="index.html" class="back-link">→ חזרה לדף הבית</a>
+</section>
+
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+  <div class="container">
+    <p>© 2026 חכמת האוטומציה | אריאל וייג | <a href="mailto:ariel@autowise-ai.com">ariel@autowise-ai.com</a> | <a href="index.html">דף הבית</a> | <a href="privacy.html">מדיניות פרטיות</a> | <a href="terms.html">תנאי שימוש</a></p>
+  </div>
+</footer>
+
+
+<script>
+/* ── Hamburger ── */
+var hamburger  = document.getElementById('hamburger');
+var mobileMenu = document.getElementById('mobileMenu');
+
+hamburger.addEventListener('click', function() {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  hamburger.setAttribute('aria-label',
+    mobileMenu.classList.contains('open') ? 'סגור תפריט' : 'פתח תפריט'
+  );
+});
+function closeMenu() {
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+}
+
+
+/* ══════════════════════════════════════
+   סימולטור: חימום לידים (before vs after)
+══════════════════════════════════════ */
+var warmMode = 'cold';
+var warmCurrentNum = 0;
+var warmAnimRef = { id: null };
+
+function animateWarm(el, start, end, duration, cb) {
+  if (warmAnimRef.id) cancelAnimationFrame(warmAnimRef.id);
+  var startTime = null;
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    var progress = Math.min((ts - startTime) / duration, 1);
+    var ease = 1 - Math.pow(1 - progress, 3);
+    var current = start + (end - start) * ease;
+    el.textContent = Math.round(current);
+    if (progress < 1) {
+      warmAnimRef.id = requestAnimationFrame(step);
+    } else if (cb) { cb(); }
+  }
+  warmAnimRef.id = requestAnimationFrame(step);
+}
+
+function setWarmMode(mode) {
+  warmMode = mode;
+  var btnCold = document.getElementById('warm-btn-cold');
+  var btnWarm = document.getElementById('warm-btn-warm');
+  var box = document.getElementById('warm-result-box');
+  var bigNum = document.getElementById('warm-big-num');
+
+  btnCold.className = 'warm-toggle-btn' + (mode === 'cold' ? ' active-cold' : '');
+  btnWarm.className = 'warm-toggle-btn' + (mode === 'warm' ? ' active-warm' : '');
+
+  if (mode === 'cold') {
+    box.className = 'warm-main-result cold-mode';
+    bigNum.className = 'warm-big-number cold-color';
+  } else {
+    box.className = 'warm-main-result warm-mode';
+    bigNum.className = 'warm-big-number warm-color';
+  }
+
+  calcWarming();
+}
+
+function calcWarming() {
+  var L = parseFloat(document.getElementById('warm-leads').value) || 0;
+  var C = parseFloat(document.getElementById('warm-close').value) || 0;
+
+  var coldDeals = Math.round(L * (C / 100));
+  var cWarm = Math.min(C * 1.3, 100);
+  var warmDeals = Math.round(L * (cWarm / 100));
+  var diff = warmDeals - coldDeals;
+
+  var bigNum = document.getElementById('warm-big-num');
+  var targetNum = warmMode === 'cold' ? coldDeals : warmDeals;
+
+  // Animate
+  var prev = warmCurrentNum;
+  warmCurrentNum = targetNum;
+  animateWarm(bigNum, prev, targetNum, 450);
+
+  // Pop
+  bigNum.classList.remove('pop');
+  void bigNum.offsetWidth;
+  bigNum.classList.add('pop');
+  setTimeout(function() { bigNum.classList.remove('pop'); }, 280);
+
+  // Comparison text
+  document.getElementById('warm-val-warm').textContent = warmDeals;
+  document.getElementById('warm-val-cold').textContent = coldDeals;
+
+  var diffEl = document.getElementById('warm-diff');
+  if (diff > 0 && L > 0 && C > 0) {
+    diffEl.textContent = '👉 זה פער של ' + diff + ' לקוחות בחודש';
+  } else {
+    diffEl.textContent = '';
+  }
+
+  // Show edu text
+  var edu = document.getElementById('warm-edu');
+  if (L > 0 && C > 0) {
+    edu.classList.add('visible');
+  } else {
+    edu.classList.remove('visible');
+  }
+}
+
+calcWarming();
+
+
+/* ══════════════════════════════════════
+   סימולטור 1: ROI אוטומציה
+   McKinsey — 60-70% of repetitive tasks can be automated
+══════════════════════════════════════ */
+function calcROI() {
+  var hours = parseFloat(document.getElementById('roi-hours').value) || 0;
+  var cost  = parseFloat(document.getElementById('roi-cost').value) || 0;
+  var leads = parseFloat(document.getElementById('roi-leads').value) || 0;
+
+  if (hours === 0 || cost === 0) {
+    alert('נא למלא לפחות שעות שבועיות ועלות שעת עבודה');
+    return;
+  }
+
+  // Monthly cost of manual work
+  var monthlyCost = hours * cost * 4;
+  // Automation saves 65% (midpoint of McKinsey 60-70%)
+  var savings = Math.round(monthlyCost * 0.65);
+  // Hours saved per month
+  var hoursSaved = Math.round(hours * 0.65 * 4);
+  // Leads that could be handled
+  var autoLeads = Math.round(leads * 0.65 * 30);
+
+  document.getElementById('roi-amount').textContent = savings.toLocaleString('he-IL') + ' ₪ לחודש';
+  document.getElementById('roi-detail').innerHTML =
+    'היום אתם מוציאים <strong>' + monthlyCost.toLocaleString('he-IL') + ' ₪</strong> בחודש על טיפול ידני בלידים.<br>' +
+    'בוט יכול לקחת על עצמו <strong>' + hoursSaved + ' שעות</strong> מתוך זה כל חודש' +
+    (autoLeads > 0 ? '<br>ולטפל אוטומטית ב-<strong>' + autoLeads.toLocaleString('he-IL') + ' פניות</strong> בחודש — מענה, סינון, תיאום.' : '');
+
+  var result = document.getElementById('roi-result');
+  result.classList.add('visible');
+}
+
+
+/* ══════════════════════════════════════
+   סימולטור: לידים מחוץ לשעות עבודה
+══════════════════════════════════════ */
+var ahCurrentMissed = 0;
+var ahCurrentComp = 0;
+var ahAnimFrame1 = null;
+var ahAnimFrame2 = null;
+
+function animateAH(el, start, end, duration, animRef, format) {
+  if (animRef.id) cancelAnimationFrame(animRef.id);
+  var startTime = null;
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    var progress = Math.min((ts - startTime) / duration, 1);
+    var ease = 1 - Math.pow(1 - progress, 3);
+    var current = start + (end - start) * ease;
+    el.textContent = format(current);
+    if (progress < 1) {
+      animRef.id = requestAnimationFrame(step);
+    }
+  }
+  animRef.id = requestAnimationFrame(step);
+}
+
+var ahRef1 = { id: null };
+var ahRef2 = { id: null };
+
+function calcAfterHours() {
+  var leadsPerDay = parseFloat(document.getElementById('ah-leads').value) || 0;
+  var activeHours = parseFloat(document.getElementById('ah-hours').value) || 0;
+
+  var missedEl = document.getElementById('ah-missed-val');
+  var compEl = document.getElementById('ah-competitor-val');
+  var insight = document.getElementById('ah-insight');
+
+  if (leadsPerDay <= 0 || activeHours <= 0 || activeHours >= 24) {
+    var prevM = ahCurrentMissed;
+    var prevC = ahCurrentComp;
+    ahCurrentMissed = 0;
+    ahCurrentComp = 0;
+    animateAH(missedEl, prevM, 0, 300, ahRef1, function(v) { return Math.round(v); });
+    animateAH(compEl, prevC, 0, 300, ahRef2, function(v) { return Math.round(v); });
+    insight.classList.remove('visible');
+    return;
+  }
+
+  // Leads distribute across 24 hours; leads outside active hours are missed
+  var offHours = 24 - activeHours;
+  var missedLeads = Math.round(leadsPerDay * (offHours / 24));
+  // ~60% of missed leads go to competitors (based on lead response studies)
+  var toCompetitors = Math.round(missedLeads * 0.6);
+
+  var prevMissed = ahCurrentMissed;
+  var prevComp = ahCurrentComp;
+  ahCurrentMissed = missedLeads;
+  ahCurrentComp = toCompetitors;
+
+  animateAH(missedEl, prevMissed, missedLeads, 400, ahRef1, function(v) { return Math.round(v); });
+  animateAH(compEl, prevComp, toCompetitors, 400, ahRef2, function(v) { return Math.round(v); });
+
+  // Pop animation
+  missedEl.classList.remove('pop');
+  void missedEl.offsetWidth;
+  missedEl.classList.add('pop');
+  setTimeout(function() { missedEl.classList.remove('pop'); }, 250);
+
+  // Show insight
+  if (missedLeads > 0) {
+    insight.classList.add('visible');
+  } else {
+    insight.classList.remove('visible');
+  }
+}
+
+calcAfterHours();
+
+
+/* ══════════════════════════════════════
+   סימולטור 4: חיסכון זמן בשיחות מכירה
+   Live calculation with smooth number animation
+══════════════════════════════════════ */
+var callsCurrentHours = 0;
+var callsCurrentDays = 0;
+var callsAnimFrame = null;
+
+function animateValue(el, start, end, duration, format) {
+  if (callsAnimFrame) cancelAnimationFrame(callsAnimFrame);
+  var startTime = null;
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    var progress = Math.min((ts - startTime) / duration, 1);
+    // ease-out cubic
+    var ease = 1 - Math.pow(1 - progress, 3);
+    var current = start + (end - start) * ease;
+    el.textContent = format(current);
+    if (progress < 1) {
+      callsAnimFrame = requestAnimationFrame(step);
+    }
+  }
+  callsAnimFrame = requestAnimationFrame(step);
+}
+
+function calcCalls() {
+  var L = parseFloat(document.getElementById('calls-leads').value) || 0;
+  var T = parseFloat(document.getElementById('calls-time').value) || 0;
+
+  var totalMinutes = L * T;
+  var totalHours = totalMinutes / 60;
+  var workDays = totalHours / 8;
+
+  // Round for display
+  var hoursRounded = Math.round(totalHours * 10) / 10;
+  var daysRounded = Math.round(workDays * 10) / 10;
+
+  var hoursEl = document.getElementById('calls-hours-val');
+  var daysEl = document.getElementById('calls-days-val');
+  var persuasion = document.getElementById('calls-persuasion');
+
+  // Animate hours
+  var prevHours = callsCurrentHours;
+  callsCurrentHours = hoursRounded;
+  animateValue(hoursEl, prevHours, hoursRounded, 400, function(v) {
+    return (Math.round(v * 10) / 10).toLocaleString('he-IL');
+  });
+
+  // Update days text
+  var prevDays = callsCurrentDays;
+  callsCurrentDays = daysRounded;
+  var daysTarget = daysRounded;
+  var daysStart = prevDays;
+  var daysStartTime = null;
+  function animDays(ts) {
+    if (!daysStartTime) daysStartTime = ts;
+    var p = Math.min((ts - daysStartTime) / 400, 1);
+    var e = 1 - Math.pow(1 - p, 3);
+    var cur = daysStart + (daysTarget - daysStart) * e;
+    daysEl.textContent = 'זה שווה לכ־' + (Math.round(cur * 10) / 10).toLocaleString('he-IL') + ' ימי עבודה';
+    if (p < 1) requestAnimationFrame(animDays);
+  }
+  requestAnimationFrame(animDays);
+
+  // Pop animation on hours number
+  hoursEl.classList.remove('pop');
+  void hoursEl.offsetWidth; // force reflow
+  hoursEl.classList.add('pop');
+  setTimeout(function() { hoursEl.classList.remove('pop'); }, 250);
+
+  // Show/hide persuasion text
+  if (L > 0 && T > 0) {
+    persuasion.classList.add('visible');
+  } else {
+    persuasion.classList.remove('visible');
+  }
+}
+
+// Run once on load to set initial state
+calcCalls();
+
+
+/* ══════════════════════════════════════
+   סימולטור טלפון: מעבר בין לשוניות + חישובים
+══════════════════════════════════════ */
+
+
+/* ══════════════════════════════════════
+   סימולטור: טמפרטורת לידים
+══════════════════════════════════════ */
+(function () {
+  var PAD_L = 50, DATA_W = 435, DATA_TOP = 20, DATA_H = 182;
+  window.simInteracted = false;
+  window.simTouch = function() { window.simInteracted = true; simUpdate(); };
+
+  function sliderToMinutes(v) {
+    if (v <= 0)   return 0;
+    if (v <= 20)  return 0   + (30  - 0)   * (v / 20);
+    if (v <= 40)  return 30  + (60  - 30)  * ((v - 20) / 20);
+    if (v <= 60)  return 60  + (240 - 60)  * ((v - 40) / 20);
+    if (v <= 80)  return 240 + (720 - 240) * ((v - 60) / 20);
+    return              720 + (1440 - 720) * ((v - 80) / 20);
+  }
+
+  function minutesToProb(m) {
+    if (m <= 5)   return 100;
+    if (m <= 30)  return 100 - 35 * (m - 5)   / 25;
+    if (m <= 60)  return 65  - 15 * (m - 30)  / 30;
+    if (m <= 240) return 50  - 20 * (m - 60)  / 180;
+    if (m <= 720) return 30  - 15 * (m - 240) / 480;
+    return              15  - 5  * (m - 720) / 720;
+  }
+
+  function timeToX(t) {
+    return PAD_L + (Math.log10(Math.max(t, 1)) / Math.log10(1440)) * DATA_W;
+  }
+
+  function probToY(p) {
+    return DATA_TOP + DATA_H - (p / 100) * DATA_H;
+  }
+
+  function formatTime(m) {
+    if (m === 0)  return '0 דק׳';
+    if (m <= 1)   return 'דקה';
+    if (m < 60)   return Math.round(m) + ' דק׳';
+    if (m < 120)  return 'שעה';
+    if (m < 1440) return Math.round(m / 60) + ' שעות';
+    return '24 שעות';
+  }
+
+  function probToColor(p) {
+    if (p >= 60) {
+      var t = (p - 60) / 40;
+      return 'rgb(255,' + Math.round(61 * t + 140 * (1 - t)) + ',0)';
+    }
+    if (p >= 30) {
+      var t2 = (p - 30) / 30;
+      return 'rgb(' + Math.round(255 * t2 + 102 * (1 - t2)) + ',' +
+                      Math.round(140 * t2 + 194 * (1 - t2)) + ',' +
+                      Math.round(0   * t2 + 212 * (1 - t2)) + ')';
+    }
+    var t3 = p / 30;
+    return 'rgb(' + Math.round(102 * t3 + 179 * (1 - t3)) + ',' +
+                    Math.round(194 * t3 + 229 * (1 - t3)) + ',' +
+                    Math.round(212 * t3 + 252 * (1 - t3)) + ')';
+  }
+
+  function updateEmoji(mins) {
+    var emoji, label, shake;
+    if      (mins <=  5)  { emoji = '😎'; label = 'מצב מצוין';              shake = false; }
+    else if (mins <= 30)  { emoji = '🙂'; label = 'עוד סביר';               shake = false; }
+    else if (mins <= 60)  { emoji = '😐'; label = 'מתחיל להיות בעייתי';    shake = false; }
+    else if (mins <= 180) { emoji = '😟'; label = 'הפסד משמעותי';           shake = false; }
+    else                  { emoji = '😨'; label = 'אתם מפספסים המון';       shake = true;  }
+    var emojiEl = document.getElementById('sim-emoji');
+    var labelEl = document.getElementById('sim-emoji-label');
+    if (emojiEl) {
+      emojiEl.textContent = emoji;
+      if (shake) {
+        emojiEl.classList.remove('is-shaking');
+        void emojiEl.offsetWidth;
+        emojiEl.classList.add('is-shaking');
+      } else {
+        emojiEl.classList.remove('is-shaking');
+      }
+    }
+    if (labelEl) labelEl.textContent = label;
+  }
+
+  var _simTimers = {};
+  function simCountUp(id, target, color) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (_simTimers[id]) cancelAnimationFrame(_simTimers[id]);
+    var start = parseInt(el.getAttribute('data-current') || '0');
+    var startTime = null;
+    var duration = 340;
+    el.classList.remove('counting');
+    void el.offsetWidth;
+    el.classList.add('counting');
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var p = Math.min((ts - startTime) / duration, 1);
+      var ease = 1 - Math.pow(1 - p, 3);
+      var val = Math.round(start + (target - start) * ease);
+      el.textContent = '₪' + val.toLocaleString('he-IL');
+      if (color) el.style.color = color;
+      if (p < 1) { _simTimers[id] = requestAnimationFrame(step); }
+      else {
+        el.setAttribute('data-current', target);
+        _simTimers[id] = null;
+        el.classList.remove('counting');
+      }
+    }
+    _simTimers[id] = requestAnimationFrame(step);
+  }
+
+  window.simUpdate = function () {
+    var sv   = parseInt(document.getElementById('sim-slider').value) || 0;
+    var lv   = parseFloat(document.getElementById('sim-lead-value').value)  || 300;
+    var ld   = parseFloat(document.getElementById('sim-leads-month').value) || 3;
+    var lm   = ld * 22;
+    var mins = sliderToMinutes(sv);
+    var prob = minutesToProb(mins);
+    var loss = Math.round(lm * lv * (1 - prob / 100));
+    var color = probToColor(prob);
+
+    var badge = document.getElementById('sim-time-label');
+    badge.textContent = formatTime(mins);
+    badge.style.color = color;
+    badge.style.borderColor = color;
+    badge.style.background = color.replace('rgb(', 'rgba(').replace(')', ',0.10)');
+    badge.style.boxShadow = '0 0 0 4px ' + color.replace('rgb(', 'rgba(').replace(')', ',0.12)');
+
+    document.getElementById('sim-slider').style.background =
+      'linear-gradient(to right, ' + color + ' ' + sv + '%, #252e62 ' + sv + '%)';
+
+    simCountUp('sim-loss-amount', loss, '#f87171');
+    document.getElementById('sim-ouch-sub').textContent =
+      prob >= 95 ? 'אתם בחלון הזהב - תגובה מיידית שומרת את הליד חם ✨' :
+      prob >= 60 ? 'לפי 22 ימי עבודה בחודש' :
+      prob >= 30 ? 'הליד מתקרר. רק תגובה מהירה מצילה אותו.' :
+                   'הליד קפוא. סוכן AI היה שומר אותו חם מהרגע הראשון.';
+
+    if (window.simInteracted) {
+      var ouch = document.getElementById('sim-ouch-box');
+      if (ouch) {
+        ouch.classList.remove('pulsing');
+        void ouch.offsetWidth;
+        ouch.classList.add('pulsing');
+      }
+    }
+
+    var simCard = document.querySelector('#sim-lead-temp .sim-card');
+    if (simCard) {
+      simCard.classList.remove('zone-gold', 'zone-warm', 'zone-cold');
+      if (prob >= 90)      simCard.classList.add('zone-gold');
+      else if (prob >= 50) simCard.classList.add('zone-warm');
+      else                 simCard.classList.add('zone-cold');
+    }
+
+    var ctaText = document.getElementById('sim-cta-text');
+    if (ctaText) {
+      ctaText.innerHTML = 'לחצו לשליחת הודעה לאריאל, כדי לראות איך לא לפספס לידים בשווי <span style="color:#252e62; font-weight:900;">' + loss.toLocaleString('he-IL') + ' ש"ח</span>';
+    }
+
+    updateEmoji(mins);
+
+    var rateEl = document.getElementById('sim-conv-rate');
+    if (rateEl) {
+      rateEl.textContent = Math.round(prob) + '%';
+      rateEl.style.color = prob >= 60 ? '#4ade80' : prob >= 30 ? '#fbbf24' : '#f87171';
+    }
+
+    var x = timeToX(mins);
+    var y = probToY(prob);
+
+    var ml = document.getElementById('sim-marker-line');
+    var md = document.getElementById('sim-marker-dot');
+    var tb = document.getElementById('sim-tooltip-bg');
+    var tt = document.getElementById('sim-tooltip-text');
+
+    if (ml) { ml.setAttribute('x1', x); ml.setAttribute('x2', x); }
+    if (md) { md.setAttribute('cx', x); md.setAttribute('cy', y); md.setAttribute('stroke', color); }
+
+    if (tt) tt.textContent = Math.round(prob) + '%';
+    if (tb) {
+      var bx = x + 8; if (x > 408) bx = x - 96;
+      var by = y - 40; if (y < 48) by = y + 10;
+      tb.setAttribute('x', bx);
+      tb.setAttribute('y', by);
+      tb.setAttribute('fill', color);
+      if (tt) { tt.setAttribute('x', bx + 44); tt.setAttribute('y', by + 24); }
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', window.simUpdate);
+  } else {
+    window.simUpdate();
+  }
+})();
+
+/* ── Dynamic WhatsApp message from simulator ── */
+(function(){
+  function simWaUrl(){
+    var el = document.getElementById('sim-loss-amount');
+    var raw = el && (el.getAttribute('data-current') || el.textContent.replace(/[^\d]/g,''));
+    var amt = parseInt(raw,10);
+    var msg = amt && amt > 0
+      ? 'היי אריאל, לפי הסימולטור באתר אני מפסיד בערך ' + amt.toLocaleString('he-IL') + ' ₪ בחודש בגלל מענה איטי ללידים. אשמח לבדוק איך אפשר לשפר את זה בעסק שלי.'
+      : 'היי אריאל, בדקתי את הסימולטור באתר ואני רוצה להבין איך אוטומציה יכולה לעזור לי לשפר את הטיפול בלידים.';
+    return 'https://wa.me/972546242468?text=' + encodeURIComponent(msg);
+  }
+  document.addEventListener('click', function(e){
+    var link = e.target.closest('.sim-cta-link');
+    if(link){ link.href = simWaUrl(); }
+  });
+})();
+
+</script>
+
+</body>
+</html>

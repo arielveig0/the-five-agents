@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בוט-קביעת פגישות | חכמת האוטומציה</title>
+  <meta name="description" content="היומן שלכם הולך להתמלא מעצמו - בוט AI לתיאום פגישות אוטומטי עם Google Calendar.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Heebo:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:      #5BC0D3;
+      --teal-dark: #1B7A8C;
+      --navy:      #252e62;
+      --navy-mid:  #404675;
+      --light:     #F3F3F3;
+      --white:     #ffffff;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Assistant', sans-serif;
+      color: var(--navy);
+      background: var(--white);
+      direction: rtl;
+      line-height: 1.7;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .topbar-logo {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: 1.1rem;
+      color: var(--white); text-decoration: none;
+    }
+    .topbar-logo span { color: var(--teal); }
+    .topbar-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.75); text-decoration: none;
+      font-size: 0.9rem; font-weight: 600;
+      transition: color 0.2s;
+    }
+    .topbar-back:hover { color: var(--teal); }
+    .topbar-back svg { width: 16px; height: 16px; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a2050 60%, #0d1433 100%);
+      padding: 80px 24px 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(91,192,211,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(91,192,211,0.15);
+      border: 1px solid rgba(91,192,211,0.35);
+      color: var(--teal); font-size: 0.82rem; font-weight: 700;
+      padding: 6px 16px; border-radius: 50px;
+      margin-bottom: 24px; letter-spacing: 0.04em;
+    }
+    .hero h1 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.9rem, 4vw, 2.8rem);
+      color: var(--white); line-height: 1.25;
+      max-width: 820px; margin: 0 auto 24px;
+    }
+    .hero h1 em { color: var(--teal); font-style: normal; }
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: rgba(255,255,255,0.75);
+      max-width: 700px; margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* ── CONTAINER ── */
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── FEATURES (cards grid) ── */
+    .features { background: var(--light); padding: 72px 24px; }
+    .features-title {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+      color: var(--navy); text-align: center;
+      margin-bottom: 48px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+      max-width: 900px; margin: 0 auto;
+    }
+    @media (max-width: 640px) { .features-grid { grid-template-columns: 1fr; } }
+
+    .feature-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 30px 26px;
+      box-shadow: 0 4px 24px rgba(37,46,98,0.08);
+      border: 1.5px solid transparent;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      position: relative;
+    }
+    .feature-card:hover {
+      border-color: rgba(91,192,211,0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(91,192,211,0.14);
+    }
+    .feature-icon {
+      width: 50px; height: 50px;
+      background: linear-gradient(135deg, var(--navy) 0%, #3d4f8c 100%);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .feature-icon svg {
+      width: 24px; height: 24px;
+      stroke: var(--teal); fill: none;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .feature-card h3 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 700; font-size: 1.05rem;
+      color: var(--navy); margin-bottom: 10px;
+    }
+    .feature-card p { font-size: 0.95rem; color: #4a5568; line-height: 1.7; }
+
+    /* wide card spanning full row */
+    .feature-card.wide { grid-column: 1 / -1; }
+
+    /* ── HOW IT WORKS ── */
+    .how {
+      padding: 72px 24px;
+      background: var(--white);
+    }
+    .how h2 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+      color: var(--navy); text-align: center;
+      margin-bottom: 44px;
+    }
+    .steps {
+      display: flex; flex-direction: column; gap: 0;
+      max-width: 640px; margin: 0 auto;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 26px; bottom: 26px;
+      right: 24px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--teal), rgba(91,192,211,0.1));
+    }
+    .step {
+      display: flex; align-items: flex-start; gap: 20px;
+      padding: 0 0 32px;
+      position: relative;
+    }
+    .step:last-child { padding-bottom: 0; }
+    .step-num {
+      width: 50px; height: 50px; flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(37,46,98,0.3);
+      position: relative; z-index: 1;
+    }
+    .step-body h3 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      color: var(--navy); margin-bottom: 4px;
+      padding-top: 12px;
+    }
+    .step-body p { font-size: 0.95rem; color: #4a5568; line-height: 1.65; }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a2050 100%);
+      padding: 72px 24px;
+      text-align: center;
+    }
+    .cta-section h2 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      color: var(--white); margin-bottom: 18px;
+    }
+    .cta-section p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.75);
+      max-width: 600px; margin: 0 auto 40px;
+      line-height: 1.8;
+    }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: #25D366; color: var(--white);
+      font-family: 'Heebo', sans-serif;
+      font-weight: 700; font-size: 1.05rem;
+      padding: 18px 36px; border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 8px 30px rgba(37,211,102,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 14px 40px rgba(37,211,102,0.5);
+    }
+    .cta-btn svg { width: 24px; height: 24px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0d1433; padding: 32px 24px; text-align: center;
+    }
+    footer p { color: rgba(255,255,255,0.45); font-size: 0.85rem; }
+    footer a { color: var(--teal); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .topbar { padding: 12px 16px; }
+      .steps::before { right: 23px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <nav class="topbar">
+    <a href="index.html" class="topbar-logo">חכמת <span>האוטומציה</span></a>
+    <a href="index.html#services" class="topbar-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+      חזרה לשירותים
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">✦ בוט-קביעת פגישות</div>
+    <h1>היומן שלכם הולך להתמלא מעצמו</h1>
+    <p style="color:var(--teal); font-family:'Heebo',sans-serif; font-weight:700; font-size:clamp(1.1rem,2.5vw,1.4rem); margin:-12px auto 24px; max-width:820px;">(בזמן שאתם מתרכזים בעבודה)</p>
+    <p>
+      נמאס לכם מה"פינג-פונג" האינסופי של תיאום פגישות? הבוט החכם שלנו לוקח את כל כאב הראש הזה עליו.
+      הוא מתממשק ישירות ל-Google Calendar שלכם, בודק מתי אתם באמת פנויים,
+      וסוגר עבורכם את הפגישה במינימום זמן ומקסימום מקצועיות.
+    </p>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="container">
+      <h2 class="features-title">זה לא רק תיאום, זו הכנה מושלמת לפגישה</h2>
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+          <h3>אפיון וסינון מקדים</h3>
+          <p>הבוט שואל את הלקוח שאלות מנחות, אוסף פרטים רלוונטיים ואפילו מבקש מסמכים - כדי שתגיעו לפגישה כשאתם כבר יודעים בדיוק מה הלקוח צריך.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <h3>הקשר מלא בתוך היומן</h3>
+          <p>בסיום התיאום, הבוט רושם את כל סיכום השיחה ישירות בתוך הזימון ביומן שלכם. פותחים את הזימון רגע לפני הפגישה, קוראים את התקציר, ונכנסים מוכנים מתמיד.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+          </div>
+          <h3>מקסימום נוכחות (No-shows)</h3>
+          <p>הבוט שולח תזכורות אוטומטיות בוואטסאפ, הוראות הגעה ואפילו "סרטוני חימום" כדי להעלות את רמת העניין של הלקוח ולוודא שהוא אכן יגיע.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </div>
+          <h3>ניהול גמיש</h3>
+          <p>הלקוח צריך להזיז? הבוט מאפשר שינוי מועד בצורה עצמאית. המערכת יודעת להגדיר "זמני הגנה" (Buffers) כדי שלא תקבעו פגישות גב-אל-גב ללא הפסקה.</p>
+        </div>
+
+        <div class="feature-card wide">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <line x1="12" y1="1" x2="12" y2="23"/>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+          <h3>סינון רצינות (תשלום מראש)</h3>
+          <p>ניתן להגדיר שהבוט יגבה תשלום או מקדמה לפני פתיחת היומן, כך שתדעו שרק לקוחות רציניים באמת קובעים איתכם זמן.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how">
+    <div class="container">
+      <h2>איך זה עובד?</h2>
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h3>הלקוח פונה אליכם בוואטסאפ או באתר</h3>
+            <p>הבוט מקבל אותו מיידית, 24/7, ומתחיל בשיחה חכמה.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h3>הבוט מנהל שיחה חכמה ומציע מועדים פנויים</h3>
+            <p>מבין את הצורך, מסנן לפי זמינותכם האמיתית, ומגיש אפשרויות ברורות ללקוח.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h3>הבוט אוסף מייל ושולח זימון לשני הצדדים</h3>
+            <p>הלקוח מקבל אישור עם כל הפרטים, ואתם מקבלים עדכון עם סיכום השיחה ישירות ביומן.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>רוצים לראות איך היומן שלכם מתחיל לעבוד בשבילכם?</h2>
+      <p>
+        נסו את בוט ההדגמה שלנו בוואטסאפ. תראו כמה זה פשוט, מהיר ואינטליגנטי -
+        גם עבורכם וגם עבור הלקוח שלכם.
+      </p>
+      <a
+        href="https://api.whatsapp.com/send/?phone=972534581794&text=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%AA%D7%A0%D7%A1%D7%95%D7%AA%20%D7%91%D7%A6%27%D7%90%D7%98%D7%91%D7%95%D7%98%20%D7%A1%D7%95%D7%9B%D7%9F%20%D7%9C%D7%A7%D7%91%D7%99%D7%A2%D7%AA%20%D7%A4%D7%92%D7%99%D7%A9%D7%95%D7%AA&type=phone_number&app_absent=0"
+        class="cta-btn"
+        target="_blank"
+        rel="noopener"
+      >
+        <svg viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+        </svg>
+        אני רוצה להתנסות בצ'אטבוט סוכן לקביעת פגישות
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 חכמת האוטומציה | <a href="mailto:ariel@autowise-ai.com">ariel@autowise-ai.com</a> | <a href="index.html">חזרה לאתר הראשי</a></p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בוט לוואטסאפ לעסק קטן | חכמת האוטומציה</title>
+  <meta name="description" content="בוט לוואטסאפ לעסק קטן שעובד בשבילך 24/7 - עונה ללקוחות, קובע פגישות ושולח תזכורות. הקמה תוך 15 דקות, בלי ידע טכני. פשוט, חכם ומשתלם.">
+  <link rel="canonical" href="https://autowise-ai.org/bot-whatsapp-small-business.html">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="בוט לוואטסאפ לעסק קטן | חכמת האוטומציה">
+  <meta property="og:description" content="בוט לוואטסאפ לעסק קטן שעובד בשבילך 24/7 - עונה ללקוחות, קובע פגישות ושולח תזכורות. הקמה תוך 15 דקות.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://autowise-ai.org/bot-whatsapp-small-business.html">
+  <meta property="og:site_name" content="חכמת האוטומציה - autowise-ai.org">
+  <meta property="og:locale" content="he_IL">
+
+  <!-- JSON-LD: LocalBusiness -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "חכמת האוטומציה",
+    "url": "https://autowise-ai.org",
+    "description": "בוט לוואטסאפ לעסק קטן - אוטומציה חכמה לעסקים קטנים ובינוניים",
+    "telephone": "+972-53-458-1794",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "IL"
+    },
+    "sameAs": [
+      "https://autowise-ai.org"
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "בוט לוואטסאפ לעסק קטן - הפתרון הפשוט שעובד בשבילך",
+    "author": {
+      "@type": "Person",
+      "name": "אריאל וייג"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "חכמת האוטומציה",
+      "url": "https://autowise-ai.org"
+    },
+    "datePublished": "2026-04-12",
+    "dateModified": "2026-04-12",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://autowise-ai.org/bot-whatsapp-small-business.html"
+    },
+    "description": "בוט לוואטסאפ לעסק קטן שעובד בשבילך 24/7 - עונה ללקוחות, קובע פגישות ושולח תזכורות. הקמה תוך 15 דקות, בלי ידע טכני."
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Heebo:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:      #5BC0D3;
+      --teal-dark: #1B7A8C;
+      --navy:      #252e62;
+      --navy-mid:  #404675;
+      --light:     #F3F3F3;
+      --white:     #ffffff;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Assistant', sans-serif;
+      color: var(--navy);
+      background: var(--white);
+      direction: rtl;
+      line-height: 1.7;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .topbar-logo {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: 1.1rem;
+      color: var(--white); text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .topbar-logo img { height: 36px; width: auto; }
+    .topbar-logo span { color: var(--teal); }
+    .topbar-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.75); text-decoration: none;
+      font-size: 0.9rem; font-weight: 600;
+      transition: color 0.2s;
+    }
+    .topbar-back:hover { color: var(--teal); }
+    .topbar-back svg { width: 16px; height: 16px; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a2050 60%, #0d1433 100%);
+      padding: 80px 24px 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(91,192,211,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(91,192,211,0.15);
+      border: 1px solid rgba(91,192,211,0.35);
+      color: var(--teal); font-size: 0.82rem; font-weight: 700;
+      padding: 6px 16px; border-radius: 50px;
+      margin-bottom: 24px; letter-spacing: 0.04em;
+    }
+    .hero h1 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.9rem, 4vw, 2.8rem);
+      color: var(--white);
+      line-height: 1.25;
+      max-width: 820px; margin: 0 auto 24px;
+    }
+    .hero h1 em { color: var(--teal); font-style: normal; }
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: rgba(255,255,255,0.75);
+      max-width: 680px; margin: 0 auto;
+      line-height: 1.75;
+    }
+
+    /* ── CONTAINER ── */
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── INTRO SECTION ── */
+    .intro {
+      padding: 72px 24px;
+      background: var(--white);
+    }
+    .section-label {
+      display: inline-block;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--teal-dark); text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .intro h2 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--navy); margin-bottom: 20px;
+      line-height: 1.3;
+    }
+    .intro p {
+      font-size: 1.08rem; color: #4a5568;
+      max-width: 760px; line-height: 1.8;
+    }
+    .teal-line {
+      width: 48px; height: 4px;
+      background: var(--teal); border-radius: 2px;
+      margin-bottom: 20px;
+    }
+
+    /* ── FEATURES ── */
+    .features { background: var(--light); padding: 72px 24px; }
+    .features-title {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+      color: var(--navy); text-align: center;
+      margin-bottom: 48px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 900px; margin: 0 auto;
+    }
+    @media (max-width: 640px) {
+      .features-grid { grid-template-columns: 1fr; }
+    }
+    .feature-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 32px 28px;
+      box-shadow: 0 4px 24px rgba(37,46,98,0.08);
+      border: 1.5px solid transparent;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), #1a9999);
+      opacity: 0; transition: opacity 0.25s;
+    }
+    .feature-card:hover {
+      border-color: rgba(91,192,211,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(91,192,211,0.15);
+    }
+    .feature-card:hover::after { opacity: 1; }
+    .feature-icon {
+      width: 50px; height: 50px;
+      background: linear-gradient(135deg, var(--navy) 0%, #3d4f8c 100%);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+    }
+    .feature-icon svg { width: 24px; height: 24px; stroke: var(--teal); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .feature-card h3 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 700; font-size: 1.1rem;
+      color: var(--navy); margin-bottom: 10px;
+    }
+    .feature-card p { font-size: 0.97rem; color: #4a5568; line-height: 1.7; }
+
+    /* ── BENEFITS SECTION ── */
+    .benefits { background: var(--white); padding: 72px 24px; }
+    .benefits-title {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+      color: var(--navy); text-align: center;
+      margin-bottom: 48px;
+    }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      max-width: 900px; margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .benefits-grid { grid-template-columns: 1fr; }
+    }
+    .benefit-item {
+      text-align: center;
+      padding: 28px 20px;
+    }
+    .benefit-number {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: 2.6rem;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .benefit-label {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      color: var(--navy); margin-bottom: 6px;
+    }
+    .benefit-desc {
+      font-size: 0.92rem; color: #4a5568;
+      line-height: 1.7;
+    }
+
+    /* ── SIMPLE SETUP SECTION ── */
+    .setup { background: var(--light); padding: 72px 24px; }
+    .setup-title {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+      color: var(--navy); text-align: center;
+      margin-bottom: 16px;
+    }
+    .setup-subtitle {
+      text-align: center;
+      font-size: 1.08rem; color: #4a5568;
+      max-width: 600px; margin: 0 auto 48px;
+      line-height: 1.8;
+    }
+    .steps {
+      display: flex; flex-direction: column;
+      gap: 0;
+      max-width: 640px; margin: 0 auto;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      right: 23px; top: 28px; bottom: 28px;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--teal), var(--teal-dark));
+      border-radius: 2px;
+    }
+    .step {
+      display: flex; align-items: flex-start; gap: 20px;
+      padding: 20px 0;
+      position: relative;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: 1.2rem;
+      color: var(--white);
+      z-index: 2;
+    }
+    .step-content h3 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 700; font-size: 1.08rem;
+      color: var(--navy); margin-bottom: 4px;
+    }
+    .step-content p {
+      font-size: 0.95rem; color: #4a5568;
+      line-height: 1.7;
+    }
+
+    /* ── WHO IS IT FOR ── */
+    .audience { background: var(--white); padding: 72px 24px; }
+    .audience-title {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+      color: var(--navy); text-align: center;
+      margin-bottom: 48px;
+    }
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 900px; margin: 0 auto;
+    }
+    @media (max-width: 640px) {
+      .audience-grid { grid-template-columns: 1fr; }
+    }
+    .audience-card {
+      background: var(--light);
+      border-radius: 16px;
+      padding: 28px 24px;
+      display: flex; align-items: flex-start; gap: 16px;
+    }
+    .audience-icon {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--navy) 0%, #3d4f8c 100%);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .audience-icon svg { width: 22px; height: 22px; stroke: var(--teal); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .audience-card h3 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 700; font-size: 1.02rem;
+      color: var(--navy); margin-bottom: 4px;
+    }
+    .audience-card p { font-size: 0.92rem; color: #4a5568; line-height: 1.7; }
+
+    /* ── QUOTE SECTION ── */
+    .quote-section {
+      background: var(--navy);
+      padding: 72px 24px;
+      text-align: center;
+    }
+    .quote-icon {
+      font-size: 3rem; color: var(--teal);
+      line-height: 1; margin-bottom: 20px;
+      font-family: Georgia, serif;
+    }
+    .quote-section h2 {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 900; font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      color: var(--white);
+      max-width: 700px; margin: 0 auto 24px;
+      line-height: 1.35;
+    }
+    .quote-section p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.75);
+      max-width: 640px; margin: 0 auto 40px;
+      line-height: 1.8;
+    }
+
+    /* ── CTA BUTTON ── */
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: #25D366;
+      color: var(--white);
+      font-family: 'Heebo', sans-serif;
+      font-weight: 700; font-size: 1.05rem;
+      padding: 18px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 8px 30px rgba(37,211,102,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 14px 40px rgba(37,211,102,0.5);
+    }
+    .cta-btn svg { width: 24px; height: 24px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── MID CTA ── */
+    .mid-cta {
+      background: linear-gradient(135deg, var(--teal-dark) 0%, var(--navy) 100%);
+      padding: 48px 24px;
+      text-align: center;
+    }
+    .mid-cta p {
+      font-family: 'Heebo', sans-serif;
+      font-weight: 700; font-size: 1.15rem;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0d1433;
+      padding: 32px 24px;
+      text-align: center;
+    }
+    footer p {
+      color: rgba(255,255,255,0.45);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--teal); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <nav class="topbar">
+    <a href="/" class="topbar-logo">
+      <img src="logo-08.png" alt="חכמת האוטומציה - לוגו">
+      חכמת <span>האוטומציה</span>
+    </a>
+    <a href="/" class="topbar-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+      חזרה לעמוד הראשי
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">
+      ✦ פתרון אוטומציה לעסקים קטנים
+    </div>
+    <h1>בוט לוואטסאפ לעסק קטן<br><em>פשוט, חכם, ועובד בשבילך 24/7</em></h1>
+    <p>אתה עסוק בעבודה עצמה, ובזמן הזה לקוחות שולחים הודעות ולא מקבלים מענה. לא צריך מערכת מסובכת - צריך משהו פשוט שעובד. בדיוק בשביל זה יש בוט לוואטסאפ לעסק קטן.</p>
+  </section>
+
+  <!-- INTRO: WHAT IS A WHATSAPP BOT -->
+  <section class="intro">
+    <div class="container">
+      <div class="teal-line"></div>
+      <div class="section-label">מה זה בכלל?</div>
+      <h2>בוט וואטסאפ לעסק קטן - העובד הכי חרוץ שיש לך</h2>
+      <p>
+        בוט לוואטסאפ הוא כמו עובד שלא הולך לישון, לא מבקש העלאה ולא שוכח לענות.
+        הוא יושב בוואטסאפ העסקי שלך ועונה ללקוחות ברגע שהם פונים - גם בשלוש בלילה, גם בשבת, גם כשאתה באמצע פגישה.
+        <br><br>
+        זה לא רובוט קשיח שעונה "לחץ 1 לשיחה". זה בוט חכם שמבין מה הלקוח רוצה, עונה בשפה טבעית ואנושית, ומבצע פעולות אמיתיות - כמו קביעת תור, שליחת מחיר, או סינון פניות.
+      </p>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="features">
+    <div class="container">
+      <h2 class="features-title">מה הבוט עושה בפועל?</h2>
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <h3>עונה ללקוחות מיד</h3>
+          <p>כל הודעה שמגיעה לוואטסאפ מקבלת מענה מיידי. הבוט עונה על שאלות נפוצות, מספק מידע על שירותים ומחירים, ומנהל שיחה טבעית - בדיוק כמו שאתה היית עונה, רק מהר יותר.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <h3>קובע פגישות ותורים</h3>
+          <p>הלקוח אומר "אני רוצה לקבוע תור ליום שלישי" והבוט מסתנכרן עם היומן שלך, מציע שעות פנויות ומאשר - בלי שתצטרך לעצור מה שאתה עושה.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+          </div>
+          <h3>שולח תזכורות אוטומטיות</h3>
+          <p>יום לפני הפגישה, שעה לפני התור - הבוט שולח תזכורות חכמות ללקוחות ומוריד משמעותית את אחוז הביטולים וה-no shows שעולים לך כסף.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          </div>
+          <h3>מסנן לידים ומעביר רק את הרלוונטיים</h3>
+          <p>לא כל פנייה שווה את הזמן שלך. הבוט מזהה מי לקוח רציני ומעביר אליך רק את מי שבאמת מוכן לקנות - כך שאתה מתמקד בסגירת עסקאות, לא בברור שאלות.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MID CTA -->
+  <section class="mid-cta">
+    <p>נשמע כמו מה שהעסק שלך צריך? בוא נדבר.</p>
+    <a
+      href="https://api.whatsapp.com/send/?phone=972534581794&text=%D7%94%D7%99%D7%99%2C+%D7%90%D7%A9%D7%9E%D7%97+%D7%9C%D7%A0%D7%A1%D7%95%D7%AA+%D7%90%D7%AA+%D7%94%D7%93%D7%9E%D7%95&type=phone_number&app_absent=0"
+      class="cta-btn"
+      target="_blank"
+      rel="noopener"
+    >
+      <svg viewBox="0 0 24 24">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+      </svg>
+      רוצה לנסות? שלח הודעה בוואטסאפ
+    </a>
+  </section>
+
+  <!-- BENEFITS WITH NUMBERS -->
+  <section class="benefits">
+    <div class="container">
+      <h2 class="benefits-title">המספרים מדברים בעד עצמם</h2>
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <div class="benefit-number">3x</div>
+          <div class="benefit-label">יותר לידים נתפסים</div>
+          <div class="benefit-desc">לקוחות שקיבלו מענה תוך דקה נוטים פי 3 יותר להפוך ללקוחות משלמים</div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-number">60%</div>
+          <div class="benefit-label">פחות ביטולים</div>
+          <div class="benefit-desc">תזכורות אוטומטיות מורידות דרמטית את שיעור ה-no show ומגנות על ההכנסה שלך</div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-number">4+</div>
+          <div class="benefit-label">שעות נחסכות ביום</div>
+          <div class="benefit-desc">זמן שהיית מבזבז על הודעות חוזרות, תיאום פגישות ושאלות חוזרות - עכשיו פנוי לך לעבודה אמיתית</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO IS IT FOR -->
+  <section class="audience">
+    <div class="container">
+      <h2 class="audience-title">למי זה מתאים?</h2>
+      <div class="audience-grid">
+
+        <div class="audience-card">
+          <div class="audience-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <div>
+            <h3>עצמאים ופרילנסרים</h3>
+            <p>מאמנים, מעצבים, יועצים, מטפלים - כל מי שעובד לבד וצריך מישהו שיענה ללקוחות כשהוא עסוק בעבודה עצמה.</p>
+          </div>
+        </div>
+
+        <div class="audience-card">
+          <div class="audience-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <div>
+            <h3>עסקים קטנים עם 1-10 עובדים</h3>
+            <p>מספרות, קליניקות, חנויות, סטודיואים - עסקים שלא יכולים להרשות לעצמם מזכירה במשרה מלאה אבל לא יכולים לפספס לקוחות.</p>
+          </div>
+        </div>
+
+        <div class="audience-card">
+          <div class="audience-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+            </svg>
+          </div>
+          <div>
+            <h3>נותני שירות עם תורים</h3>
+            <p>רופאים, מורי נהיגה, שרברבים, חשמלאים - כל מי שצריך לתאם זמנים עם לקוחות ולשלוח תזכורות באופן שוטף.</p>
+          </div>
+        </div>
+
+        <div class="audience-card">
+          <div class="audience-icon">
+            <svg viewBox="0 0 24 24">
+              <line x1="12" y1="1" x2="12" y2="23"/>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+          <div>
+            <h3>עסקים עם פרסום דיגיטלי</h3>
+            <p>אם אתה משקיע בפייסבוק, גוגל או אינסטגרם - הבוט תופס כל ליד ברגע שהוא מגיע ומוודא שהכסף שהשקעת לא הולך לפח.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SETUP: HOW SIMPLE IS IT -->
+  <section class="setup">
+    <div class="container">
+      <h2 class="setup-title">כמה זה פשוט? 15 דקות ויש לך בוט.</h2>
+      <p class="setup-subtitle">לא צריך ידע טכני, לא צריך לשנות מספר, לא צריך להוריד אפליקציה. פשוט עובד.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h3>שיחת הכרות קצרה</h3>
+            <p>אתה מספר לנו על העסק, על השאלות הנפוצות שלקוחות שואלים ומה חשוב לך. 5 דקות, בוואטסאפ או בטלפון.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h3>אנחנו בונים את הבוט</h3>
+            <p>תוך מספר שעות הבוט שלך מוכן - מותאם לשפה שלך, לשירותים שלך ולאופי העסק. אתה מקבל הדגמה חיה לאישור.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h3>הפעלה ואתה שקט</h3>
+            <p>הבוט עולה לאוויר בוואטסאפ שלך ומתחיל לענות ללקוחות. אתה ממשיך לעבוד כרגיל - רק שעכשיו אף לקוח לא נשאר בלי מענה.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="quote-section">
+    <div class="container">
+      <div class="quote-icon">"</div>
+      <h2>אני צריך משהו פשוט לעסק שלי - בלי סיבוכים</h2>
+      <p>
+        בדיוק בשביל זה בנינו את הפתרון הזה. לא מערכת ענקית עם עשרות הגדרות.
+        בוט פשוט שעושה את מה שצריך - עונה ללקוחות, קובע פגישות, שולח תזכורות ומשחרר לך את הראש.
+        <br><br>
+        רוצה לראות איך זה עובד על העסק שלך? שלח לנו הודעה ונחזור אליך תוך דקות.
+      </p>
+      <a
+        href="https://api.whatsapp.com/send/?phone=972534581794&text=%D7%94%D7%99%D7%99%2C+%D7%90%D7%A9%D7%9E%D7%97+%D7%9C%D7%A0%D7%A1%D7%95%D7%AA+%D7%90%D7%AA+%D7%94%D7%93%D7%9E%D7%95&type=phone_number&app_absent=0"
+        class="cta-btn"
+        target="_blank"
+        rel="noopener"
+      >
+        <svg viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+        </svg>
+        אשמח לשמוע פרטים - שלחו לי הודעה
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 חכמת האוטומציה | <a href="/">חזרה לאתר הראשי</a> | <a href="/blog">בלוג</a> | <a href="mailto:ariel@autowise-ai.com">ariel@autowise-ai.com</a></p>
+  </footer>
+
+</body>
+</html>

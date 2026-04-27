@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בלוג | חכמת האוטומציה — אוטומציה עסקית וצ'אטבוטים בעברית</title>
+  <meta name="description" content="מדריכים מעשיים, case studies ועצות מקצועיות על אוטומציה עסקית, צ'אטבוטים לוואטסאפ וסוכני AI לעסקים קטנים בישראל.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://autowise-ai.org/blog/">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Heebo:wght@700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --teal:      #5BC0D3;
+      --teal-text: #1B7A8C;
+      --navy:      #252e62;
+      --navy-mid:  #404675;
+      --light:     #F3F3F3;
+      --white:     #ffffff;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { direction: rtl; font-family: 'Assistant', sans-serif; font-size: 17px; color: var(--navy); background: var(--light); }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    .container { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+
+    /* Navbar */
+    #navbar {
+      position: fixed; top: 0; right: 0; left: 0; z-index: 999;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(18px);
+      box-shadow: 0 1px 24px rgba(37,46,98,0.10);
+      border-bottom: 1px solid rgba(91,192,211,0.18);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .nav-logo img { height: 60px; width: auto; }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--navy-mid); font-size: 0.92rem; font-weight: 600;
+      padding: 8px 18px; border: 1.5px solid rgba(37,46,98,0.18); border-radius: 50px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-back:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+
+    /* Hero */
+    .blog-hero {
+      background: var(--navy); padding: 120px 0 60px;
+      position: relative; overflow: hidden;
+    }
+    .blog-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(91,192,211,0.12) 1px, transparent 1px);
+      background-size: 28px 28px; pointer-events: none;
+    }
+    .teal-line { display: inline-block; width: 48px; height: 4px; background: var(--teal); border-radius: 2px; margin-bottom: 18px; position: relative; }
+    .blog-hero h1 { font-family: 'Heebo', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 900; color: #fff; margin-bottom: 12px; position: relative; }
+    .blog-hero p { color: rgba(255,255,255,0.60); font-size: 0.95rem; position: relative; }
+
+    /* Grid */
+    .blog-grid-wrap {
+      background: var(--white); border-radius: 24px;
+      padding: 48px 52px; margin: -32px auto 60px;
+      box-shadow: 0 8px 40px rgba(37,46,98,0.10);
+    }
+    .blog-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 28px; margin-top: 32px;
+    }
+
+    /* Card */
+    .blog-card {
+      border: 1.5px solid rgba(37,46,98,0.10); border-radius: 16px;
+      overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
+      display: flex; flex-direction: column;
+    }
+    .blog-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(37,46,98,0.12); }
+    .blog-card-color {
+      height: 6px;
+    }
+    .blog-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+    .blog-card-tag {
+      display: inline-block; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--teal-text); background: rgba(91,192,211,0.1);
+      padding: 3px 10px; border-radius: 20px; margin-bottom: 12px;
+    }
+    .blog-card h2 {
+      font-family: 'Heebo', sans-serif; font-size: 1.1rem; font-weight: 900;
+      color: var(--navy); margin-bottom: 10px; line-height: 1.35;
+    }
+    .blog-card p { color: #4a5568; font-size: 0.9rem; line-height: 1.7; flex: 1; margin-bottom: 20px; }
+    .blog-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 16px; border-top: 1px solid rgba(37,46,98,0.08);
+    }
+    .blog-card-meta { font-size: 0.78rem; color: #888; }
+    .blog-card-link {
+      font-size: 0.85rem; font-weight: 700; color: var(--teal-text);
+      display: flex; align-items: center; gap: 4px;
+    }
+    .blog-card-link svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+
+    /* Coming soon card */
+    .blog-card.coming-soon { opacity: 0.55; pointer-events: none; }
+    .coming-badge {
+      display: inline-block; font-size: 0.7rem; font-weight: 700;
+      background: #f3f3f3; color: #888; padding: 3px 10px; border-radius: 20px;
+    }
+
+    /* Section title */
+    .section-label {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--teal-text); margin-bottom: 4px;
+    }
+    .section-title-main {
+      font-family: 'Heebo', sans-serif; font-size: 1.5rem; font-weight: 900; color: var(--navy);
+    }
+
+    /* Footer */
+    footer { background: var(--navy); padding: 28px 0; text-align: center; }
+    footer p { color: rgba(255,255,255,0.55); font-size: 0.88rem; }
+    footer a { color: var(--teal); transition: opacity 0.2s; }
+    footer a:hover { opacity: 0.75; }
+
+    @media (max-width: 640px) {
+      .blog-grid { grid-template-columns: 1fr; }
+      .blog-grid-wrap { padding: 32px 22px; margin: -20px auto 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar" aria-label="ניווט ראשי">
+    <div class="container nav-inner">
+      <a href="../index.html" class="nav-logo" aria-label="חכמת האוטומציה - דף הבית">
+        <img src="../logo-03.png" alt="חכמת האוטומציה" onerror="this.style.display='none'">
+      </a>
+      <a href="../index.html" class="nav-back">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        חזרה לאתר
+      </a>
+    </div>
+  </nav>
+
+  <main id="main-content">
+
+    <header class="blog-hero">
+      <div class="container">
+        <div class="teal-line"></div>
+        <h1>בלוג — אוטומציה עסקית</h1>
+        <p>מדריכים מעשיים, case studies ועצות מקצועיות לעסקים קטנים בישראל</p>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="blog-grid-wrap">
+        <div class="section-label">כל המאמרים</div>
+        <div class="section-title-main">מה חדש בבלוג</div>
+
+        <div class="blog-grid" role="list">
+
+          <!-- Article 1 — LIVE -->
+          <a href="chatbot-for-small-business.html" class="blog-card" role="listitem" aria-label="קרא את המאמר: צ'אטבוט לעסק קטן">
+            <div class="blog-card-color" style="background: var(--teal);"></div>
+            <div class="blog-card-body">
+              <span class="blog-card-tag">מדריך</span>
+              <h2>צ'אטבוט לעסק קטן: המדריך המלא לישראלים 2026</h2>
+              <p>מה זה צ'אטבוט, איך הוא עובד, ולמה עסקים שמשתמשים בו סוגרים יותר עסקאות. עם דוגמה אמיתית מהשוק הישראלי.</p>
+              <div class="blog-card-footer">
+                <span class="blog-card-meta">אפריל 2026 · 6 דקות קריאה</span>
+                <span class="blog-card-link">
+                  קרא עוד
+                  <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Article 2 — LIVE -->
+          <a href="automation-nikayon-teum-pgishot.html" class="blog-card" role="listitem" aria-label="קרא את המאמר: מיומן ריק ליומן מלא לפני פסח">
+            <div class="blog-card-color" style="background: var(--navy-mid);"></div>
+            <div class="blog-card-body">
+              <span class="blog-card-tag">Case Study</span>
+              <h2>מיומן ריק ליומן מלא לפני פסח, בלי להרים טלפון</h2>
+              <p>איך חברת ניקיון הפכה את כל תהליך התיאום לאוטומטי לחלוטין — WhatsApp → Fillout → Make → יומן Google. כולל סרטון של הזרם המלא בפעולה.</p>
+              <div class="blog-card-footer">
+                <span class="blog-card-meta">אפריל 2026 · 5 דקות קריאה</span>
+                <span class="blog-card-link">
+                  קרא עוד
+                  <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Article 3 — LIVE -->
+          <a href="onboarding-automatic-fillout.html" class="blog-card" role="listitem" aria-label="קרא את המאמר: Onboarding אוטומטי עם AI ו-Fillout">
+            <div class="blog-card-color" style="background: var(--teal-text);"></div>
+            <div class="blog-card-body">
+              <span class="blog-card-tag">מדריך · Onboarding</span>
+              <h2>מחוויית ליד לחוויית לקוח: Onboarding אוטומטי עם AI ו-Fillout</h2>
+              <p>חוזה דיגיטלי, תשלום מקדמה, זימון זום — הכל אוטומטי. בלי התכתבויות, בלי טעויות, בלי בזבוז זמן. עם דוגמה אמיתית ממעצב מותג.</p>
+              <div class="blog-card-footer">
+                <span class="blog-card-meta">אפריל 2026 · 6 דקות קריאה</span>
+                <span class="blog-card-link">
+                  קרא עוד
+                  <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Article 4 — LIVE -->
+          <a href="bot-anushi-ragishut-nachishut.html" class="blog-card" role="listitem" aria-label="קרא את המאמר: ברגישות ובנחישות — הבוט שמוכר כמו אדם">
+            <div class="blog-card-color" style="background: #5B4FC0;"></div>
+            <div class="blog-card-body">
+              <span class="blog-card-tag">מכירות · AI</span>
+              <h2>ברגישות ובנחישות: איך להפוך את הבוט שלכם לאיש המכירות הכי אנושי (והכי רווחי) בעסק</h2>
+              <p>שני סיפורים מהשטח, נוסחה מעשית וטיפים להטמעת "אישיות" בבוט — כדי שיסגור פגישות ויבנה אמון עוד לפני שדיברתם עם הלקוח.</p>
+              <div class="blog-card-footer">
+                <span class="blog-card-meta">אפריל 2026 · 5 דקות קריאה</span>
+                <span class="blog-card-link">
+                  קרא עוד
+                  <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Article 5 — LIVE -->
+          <a href="automation-gviya-kaspa.html" class="blog-card" role="listitem" aria-label="קרא את המאמר: אוטומציה היא לא מילה גסה">
+            <div class="blog-card-color" style="background: #2E8B57;"></div>
+            <div class="blog-card-body">
+              <span class="blog-card-tag">אוטומציה · מדריך</span>
+              <h2>אוטומציה היא לא מילה גסה: איך לחסוך זמן (וכסף) בלי להסתבך</h2>
+              <p>גביית כספים, תזכורות, יום הולדת ללקוחות — איך גיליון Google Sheets ועוד כלי פשוט חוסכים לכם שעות בשבוע, בלי שורת קוד אחת.</p>
+              <div class="blog-card-footer">
+                <span class="blog-card-meta">אפריל 2026 · 5 דקות קריאה</span>
+                <span class="blog-card-link">
+                  קרא עוד
+                  <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Article 6 — LIVE -->
+          <a href="signs-you-need-a-bot.html" class="blog-card" role="listitem" aria-label="קרא את המאמר: 5 סימנים שאתה צריך בוט">
+            <div class="blog-card-color" style="background: var(--teal);"></div>
+            <div class="blog-card-body">
+              <span class="blog-card-tag">בוט · וואטסאפ</span>
+              <h2>לא מספיק לענות לכל הלקוחות? 5 סימנים שאתה צריך בוט</h2>
+              <p>מפספסים הודעות, עונים על אותן שאלות שוב ושוב, לידים פונים בלילה? 5 סימנים שהעסק שלכם צריך בוט — ואיך הוא פותר כל אחד מהם.</p>
+              <div class="blog-card-footer">
+                <span class="blog-card-meta">אפריל 2026 · 5 דקות קריאה</span>
+                <span class="blog-card-link">
+                  קרא עוד
+                  <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Article 7 — LIVE -->
+          <a href="bot-that-works-at-night.html" class="blog-card" role="listitem" aria-label="קרא את המאמר: בוט שעונה ללקוחות בלילה">
+            <div class="blog-card-color" style="background: var(--navy-mid);"></div>
+            <div class="blog-card-body">
+              <span class="blog-card-tag">AI · צ'אטבוט 24/7</span>
+              <h2>בוט שעונה ללקוחות בלילה — איך זה עובד?</h2>
+              <p>למה לידים בלילה שווים זהב, איך הבוט יודע מה לענות, ומה קורה כשלקוח כותב ב-11 בלילה. עם תרחיש אמיתי מהשטח.</p>
+              <div class="blog-card-footer">
+                <span class="blog-card-meta">אפריל 2026 · 5 דקות קריאה</span>
+                <span class="blog-card-link">
+                  קרא עוד
+                  <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Article 8 — LIVE -->
+          <a href="cost-of-slow-response.html" class="blog-card" role="listitem" aria-label="קרא את המאמר: מה עולה מענה איטי ללידים">
+            <div class="blog-card-color" style="background: #C05B5B;"></div>
+            <div class="blog-card-body">
+              <span class="blog-card-tag">נתונים · ROI</span>
+              <h2>לקוחות לא מקבלים מענה מהיר? מה זה עולה לך</h2>
+              <p>78% קונים מהעסק שעונה ראשון. חישוב מלא של כמה כסף עסק קטן מפסיד כל חודש ממענה איטי — ולמה בוט מחזיר את ההשקעה תוך שבועות.</p>
+              <div class="blog-card-footer">
+                <span class="blog-card-meta">אפריל 2026 · 6 דקות קריאה</span>
+                <span class="blog-card-link">
+                  קרא עוד
+                  <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Article 9 — LIVE -->
+          <a href="chatbot-pricing-israel.html" class="blog-card" role="listitem" aria-label="קרא את המאמר: כמה עולה צ'אטבוט">
+            <div class="blog-card-color" style="background: #E8A838;"></div>
+            <div class="blog-card-body">
+              <span class="blog-card-tag">מחירים · צ'אטבוט</span>
+              <h2>כמה עולה צ'אטבוט? המחירים האמיתיים בישראל 2026</h2>
+              <p>כל מה שרצית לדעת על עלויות — בניה, תחזוקה, כלים — ומתי זה בכלל כדאי כלכלית. עם טבלת השוואה ומחשבון ROI.</p>
+              <div class="blog-card-footer">
+                <span class="blog-card-meta">אפריל 2026 · 5 דקות קריאה</span>
+                <span class="blog-card-link">
+                  קרא עוד
+                  <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Article 10 — LIVE -->
+          <a href="what-is-business-automation.html" class="blog-card" role="listitem" aria-label="קרא את המאמר: אוטומציה עסקית מה זה">
+            <div class="blog-card-color" style="background: #2E8B57;"></div>
+            <div class="blog-card-body">
+              <span class="blog-card-tag">מדריך · אוטומציה</span>
+              <h2>אוטומציה עסקית: מה זה, למה צריך ומאיפה מתחילים</h2>
+              <p>מדריך הכניסה לעולם האוטומציה — ללא ז'רגון טכני, עם דוגמאות מהחיים. כולל הדרכה לאוטומציה ראשונה ב-15 דקות.</p>
+              <div class="blog-card-footer">
+                <span class="blog-card-meta">אפריל 2026 · 6 דקות קריאה</span>
+                <span class="blog-card-link">
+                  קרא עוד
+                  <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Article 11 — LIVE -->
+          <a href="ai-agent-for-israeli-business.html" class="blog-card" role="listitem" aria-label="קרא את המאמר: סוכן AI לעסק ישראלי">
+            <div class="blog-card-color" style="background: #5B4FC0;"></div>
+            <div class="blog-card-body">
+              <span class="blog-card-tag">סוכן AI · עסקים</span>
+              <h2>סוכן AI לעסק ישראלי: 5 דרכים לחסוך 10 שעות בשבוע</h2>
+              <p>מה ההבדל בין בוט רגיל לסוכן AI — ואיך משתמשים בו בעסק קטן בצורה חכמה. עם תרחיש אמיתי מהשטח.</p>
+              <div class="blog-card-footer">
+                <span class="blog-card-meta">אפריל 2026 · 5 דקות קריאה</span>
+                <span class="blog-card-link">
+                  קרא עוד
+                  <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </span>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 חכמת האוטומציה | אריאל וייג | ע.פ. 200399723 | <a href="mailto:ariel@autowise-ai.com">ariel@autowise-ai.com</a> | <a href="../privacy.html">מדיניות פרטיות</a> | <a href="../terms.html">תנאי שימוש</a> | <a href="../accessibility.html">הצהרת נגישות</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>

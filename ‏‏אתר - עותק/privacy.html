@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מדיניות פרטיות | חכמת האוטומציה</title>
+  <meta name="robots" content="noindex">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Heebo:wght@700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --teal:      #5BC0D3;
+      --teal-text: #1B7A8C;
+      --navy:      #252e62;
+      --navy-mid:  #404675;
+      --light:     #F3F3F3;
+      --white:     #ffffff;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      direction: rtl;
+      font-family: 'Assistant', sans-serif;
+      font-size: 17px;
+      color: var(--navy);
+      background: var(--light);
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Navbar ── */
+    #navbar {
+      position: fixed; top: 0; right: 0; left: 0;
+      z-index: 999;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 1px 24px rgba(37,46,98,0.10);
+      border-bottom: 1px solid rgba(91,192,211,0.18);
+    }
+    .nav-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+    .nav-logo img { height: 60px; width: auto; }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--navy-mid);
+      font-size: 0.92rem; font-weight: 600;
+      padding: 8px 18px;
+      border: 1.5px solid rgba(37,46,98,0.18);
+      border-radius: 50px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-back:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+
+    /* ── Hero ── */
+    .privacy-hero {
+      background: var(--navy);
+      padding: 120px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .privacy-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(91,192,211,0.12) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+    .privacy-hero h1 {
+      font-family: 'Heebo', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .privacy-hero p {
+      color: rgba(255,255,255,0.60);
+      font-size: 0.95rem;
+      position: relative;
+    }
+    .privacy-hero .teal-line {
+      display: inline-block;
+      width: 48px; height: 4px;
+      background: var(--teal);
+      border-radius: 2px;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    /* ── Content ── */
+    .privacy-content {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 52px 56px;
+      margin: -32px auto 60px;
+      position: relative;
+      box-shadow: 0 8px 40px rgba(37,46,98,0.10);
+    }
+
+    .privacy-content h2 {
+      font-family: 'Heebo', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--navy);
+      margin-top: 40px;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid rgba(91,192,211,0.25);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .privacy-content h2:first-of-type { margin-top: 0; }
+    .privacy-content h2::before {
+      content: '';
+      width: 4px; height: 22px;
+      background: var(--teal);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .privacy-content h3 {
+      font-family: 'Heebo', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy-mid);
+      margin-top: 22px;
+      margin-bottom: 10px;
+    }
+
+    .privacy-content p {
+      color: #4a5568;
+      line-height: 1.85;
+      margin-bottom: 14px;
+      font-size: 1rem;
+    }
+
+    .privacy-content ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .privacy-content ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: #4a5568;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+    .privacy-content ul li::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+
+    .privacy-content a {
+      color: var(--teal-text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .privacy-content a:hover { opacity: 0.8; }
+
+    .privacy-updated {
+      display: inline-block;
+      background: rgba(91,192,211,0.10);
+      border: 1px solid rgba(91,192,211,0.25);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 0.82rem;
+      color: var(--teal-text);
+      font-weight: 600;
+      margin-bottom: 32px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--navy);
+      padding: 28px 0;
+      text-align: center;
+    }
+    footer p { color: rgba(255,255,255,0.55); font-size: 0.88rem; }
+    footer a { color: var(--teal); transition: opacity 0.2s; }
+    footer a:hover { opacity: 0.75; }
+
+    @media (max-width: 640px) {
+      .privacy-content { padding: 32px 22px; margin: -20px auto 40px; }
+      .privacy-hero { padding: 100px 0 50px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav id="navbar" aria-label="ניווט ראשי">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="חכמת האוטומציה - דף הבית">
+        <img src="logo-03.png" alt="חכמת האוטומציה" onerror="this.style.display='none'">
+      </a>
+      <a href="index.html" class="nav-back">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        חזרה לאתר
+      </a>
+    </div>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- Hero -->
+    <section class="privacy-hero">
+      <div class="container">
+        <div class="teal-line"></div>
+        <h1>מדיניות פרטיות</h1>
+        <p>עודכן לאחרונה: מרץ 2026</p>
+      </div>
+    </section>
+
+    <!-- Content -->
+    <div class="container">
+      <article class="privacy-content">
+
+        <div class="privacy-updated">📅 תחולה: מרץ 2026 · בהתאם לחוק הגנת הפרטיות, התשמ"א–1981 ותיקון 13</div>
+
+        <h2>כללי</h2>
+        <p>
+          מדיניות פרטיות זו מפרטת כיצד <strong>חכמת האוטומציה</strong> (להלן: "החברה") אוספת, מנהלת, מעבדת ומגנה על מידע אישי הנמסר או הנאסף במהלך השימוש באתר החברה.
+        </p>
+        <p>
+          השימוש באתר מהווה הסכמה למדיניות זו ולתנאים המפורטים בה.
+        </p>
+        <p>
+          מדיניות זו נערכה בהתאם להוראות חוק הגנת הפרטיות, התשמ"א–1981, לרבות תיקון 13, ובהתאם להנחיות הרשות להגנת הפרטיות.
+        </p>
+
+        <h2>אילו סוגי מידע אנו אוספים</h2>
+
+        <h3>מידע שמוסר המשתמש</h3>
+        <p>בעת מילוי טפסים באתר, ייתכן שתתבקש למסור:</p>
+        <ul>
+          <li>שם מלא</li>
+          <li>כתובת דוא"ל</li>
+          <li>מספר טלפון</li>
+          <li>תוכן הפנייה</li>
+          <li>פרטים עסקיים, במידת הצורך</li>
+        </ul>
+
+        <h3>מידע טכני</h3>
+        <p>בעת הגלישה עשוי להיאסף מידע אוטומטי כגון:</p>
+        <ul>
+          <li>כתובת IP</li>
+          <li>סוג הדפדפן ומערכת ההפעלה</li>
+          <li>העמודים שנצפו באתר וזמני השהייה בהם</li>
+        </ul>
+
+        <h3>מידע שיווקי</h3>
+        <p>מידע זה נוצר כאשר המשתמש נותן הסכמה לקבלת עדכונים, הצעות שיווקיות ו/או ניוזלטרים.</p>
+        <p>החברה אינה אוספת ביודעין מידע על קטינים מתחת לגיל 16.</p>
+
+        <h2>מטרות עיבוד המידע</h2>
+        <p>המידע נאסף ומשמש לצורך:</p>
+        <ul>
+          <li>מענה לפניות, מתן שירות וליווי משתמשים מתעניינים.</li>
+          <li>ניהול קשרי לקוחות ומתן מידע מקצועי במסגרת פעילות החברה.</li>
+          <li>שליחת דיוור פרסומי בכפוף להסכמה מפורשת ובהתאם לסעיף 30א לחוק התקשורת.</li>
+          <li>עמידה בדרישות תיקון 13 לחוק: אבטחת מידע, תיעוד, דיווח והתנהלות מול הרשות להגנת הפרטיות.</li>
+          <li>שיפור חוויית המשתמש, הגנה על האתר, מניעת פעולות זדוניות וניתוח שימושים במערכת.</li>
+        </ul>
+
+        <h2>שימוש בעוגיות (Cookies)</h2>
+        <p>האתר משתמש בעוגיות לצורך:</p>
+        <ul>
+          <li>תפעול תקין של המערכת</li>
+          <li>התאמת חוויית הגלישה</li>
+          <li>איסוף מידע אנליטי לשיפור האתר</li>
+        </ul>
+        <p>ניתן לשנות הגדרות דפדפן ולחסום עוגיות או למחוק אותן בכל עת.</p>
+
+        <h2>שיתוף והעברת מידע לצדדים שלישיים</h2>
+        <p>החברה עשויה להעביר מידע במקרים הבאים:</p>
+        <ul>
+          <li>לספקי שירות כגון שירותי אחסון, שליחת דוא"ל, גיבוי ואבטחה — בכפוף להתחייבות לשמירה על סודיות ואבטחת המידע.</li>
+          <li>לרשויות מוסמכות, אם הדבר נדרש לפי דין, צו בית משפט או הוראה מחייבת אחרת.</li>
+          <li>העברה מחוץ לישראל תתבצע רק כאשר קיימים מנגנוני הגנה העומדים בדרישות הדין.</li>
+        </ul>
+
+        <h2>אבטחת מידע</h2>
+        <p>
+          החברה מפעילה אמצעי אבטחת מידע מתקדמים לצורך שמירה על המידע מפני גישה בלתי מורשית, שימוש לרעה או חשיפה לא מורשית.
+        </p>
+        <p>
+          ככל שהדין יחייב, החברה תמנה ממונה אבטחת מידע ותנהל את מאגרי המידע בהתאם לדרישות החוק ולתקנות החלות.
+        </p>
+
+        <h2>זכויות המשתמש</h2>
+        <p>לפי הדין, לכל משתמש עומדות הזכויות הבאות:</p>
+        <ul>
+          <li>עיון במידע שנאסף אודותיו.</li>
+          <li>בקשת תיקון או מחיקה של מידע שגוי, לא מלא או לא מעודכן.</li>
+          <li>התנגדות לשימוש במידע לצורך שיווק ישיר.</li>
+          <li>ביטול הסכמה לדיוור בכל עת.</li>
+        </ul>
+        <p>פניות בנושא זה ניתן להעביר לחברה באמצעות: <a href="mailto:ariel@autowise-ai.com">ariel@autowise-ai.com</a></p>
+
+        <h2>תקופות שמירת מידע</h2>
+        <p>
+          המידע יישמר למשך התקופה הנדרשת להשגת מטרותיו או לפי הוראות הדין.
+          עם סיום התקופה, המידע יימחק או יעבור תהליך אנונימיזציה, למעט מקרים שבהם קיימת חובה לשמרו זמן נוסף.
+        </p>
+
+        <h2>שינויים במדיניות</h2>
+        <p>
+          חכמת האוטומציה שומרת לעצמה את הזכות לעדכן את מדיניות הפרטיות מעת לעת.
+          כל שינוי יפורסם באתר וייכנס לתוקף במועד פרסומו.
+        </p>
+
+      </article>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2026 חכמת האוטומציה | אריאל וייג | ע.פ. 200399723 | <a href="mailto:ariel@autowise-ai.com">ariel@autowise-ai.com</a> | <a href="privacy.html">מדיניות פרטיות</a> | <a href="terms.html">תנאי שימוש</a> | <a href="accessibility.html">הצהרת נגישות</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>

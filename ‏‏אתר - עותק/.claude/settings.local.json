@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \":*)",
+      "WebFetch(domain:alefalefalef.co.il)",
+      "WebFetch(domain:www.cufonfonts.com)",
+      "WebFetch(domain:www.onlinewebfonts.com)",
+      "Bash(curl -sL \"https://alefalefalef.co.il/en/font/ploni/\")",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --print-to-pdf=\"C:/Users/ariel/Desktop/עסק עצמאי/הצעות מחיר קלוד קוד/הצעת מחיר 20260005 - יוסף אברג''יל.pdf\" --no-margins --print-to-pdf-no-header \"file:///C:/Users/ariel/Desktop/%D7%A2%D7%A1%D7%A7%20%D7%A2%D7%A6%D7%9E%D7%90%D7%99/%D7%94%D7%A6%D7%A2%D7%95%D7%AA%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%A7%D7%9C%D7%95%D7%93%20%D7%A7%D7%95%D7%93/%D7%94%D7%A6%D7%A2%D7%AA%20%D7%9E%D7%97%D7%99%D7%A8%2020260005%20-%20%D7%99%D7%95%D7%A1%D7%A3%20%D7%90%D7%91%D7%A8%D7%92%27%D7%99%D7%9C.html\")",
+      "Bash(where python)",
+      "Bash(where python3)",
+      "Bash(where py)",
+      "Bash(node -e \":*)",
+      "Bash(powershell -Command \":*)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\ariel\\Desktop"
+    ]
+  }
+}

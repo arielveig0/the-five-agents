@@ -1,0 +1,45 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//tmp/**)",
+      "Bash(python -c ' *)",
+      "Bash(python -c \"import sys; sys.stdout.reconfigure\\(encoding='utf-8'\\); print\\('python ok'\\)\")",
+      "Bash(claude plugin *)",
+      "Bash(mkdir -p Memory \".claude/skills/web-research\")",
+      "Bash(touch Memory/.gitkeep)",
+      "Edit(/.claude/skills/web-research/**)",
+      "WebFetch(domain:autowise-ai.org)",
+      "Bash(mkdir -p QA_Reports \".claude/skills/qa-checklist\")",
+      "Bash(touch QA_Reports/.gitkeep)",
+      "Edit(/.claude/skills/client-discovery/**)",
+      "Edit(/.claude/skills/bot-spec/**)",
+      "Edit(/.claude/skills/conversation-flow/**)",
+      "Edit(/.claude/skills/system-prompt/**)",
+      "Edit(/.claude/skills/make-blueprint/**)",
+      "Edit(/.claude/skills/bot-qa/**)",
+      "Edit(/.claude/skills/client-proposal/**)",
+      "Edit(/.claude/skills/handover-doc/**)",
+      "Bash(node scripts/gen-hero-personal-vs-automation.js)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\ariel\\Desktop\\Workspace\\the-five-agents\\.claude\\skills\\client-discovery\\templates",
+      "c:\\Users\\ariel\\Desktop\\Workspace\\the-five-agents\\.claude\\skills\\bot-spec\\templates",
+      "c:\\Users\\ariel\\Desktop\\Workspace\\the-five-agents\\.claude\\skills\\conversation-flow\\templates",
+      "c:\\Users\\ariel\\Desktop\\Workspace\\the-five-agents\\.claude\\skills\\system-prompt\\templates",
+      "c:\\Users\\ariel\\Desktop\\Workspace\\the-five-agents\\.claude\\skills\\make-blueprint\\templates",
+      "c:\\Users\\ariel\\Desktop\\Workspace\\the-five-agents\\.claude\\skills\\bot-qa\\templates",
+      "c:\\Users\\ariel\\Desktop\\Workspace\\the-five-agents\\.claude\\skills\\client-proposal\\templates"
+    ]
+  },
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true
+  },
+  "extraKnownMarketplaces": {
+    "superpowers-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers-marketplace"
+      }
+    }
+  }
+}
